@@ -1,8 +1,8 @@
 {
-  "name": "rhobooru",
+  "name": "rhovue",
   "version": "1.0.0",
-  "description": "Official web frontend for rhobooru server",
-  "author": "Rhobooru",
+  "description": "Official web frontend for a rhobooru server",
+  "author": "Embramere",
   "private": true,
   "scripts": {
     "dev": "nuxt",

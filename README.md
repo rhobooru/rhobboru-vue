@@ -1,4 +1,4 @@
-# rhobooru
+# rhovue
 
 > Official web frontend for a rhobooru server
 
