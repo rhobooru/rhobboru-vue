@@ -1,0 +1,17 @@
+a {
+  color: #e5e9ec !important;
+  caret-color: #f4f4f4 !important;
+}
+
+.v-divider.brighter-divider{
+  border-color:rgba(255, 255, 255, 0.3) !important;
+}
+
+.v-navigation-drawer__content::-webkit-scrollbar {
+  display: none;
+}
+
+.v-navigation-drawer__content {
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none; 
+}

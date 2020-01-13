@@ -1,0 +1,25 @@
+query(
+  $query: String
+  $page: Int!
+  $perPage: Int!
+){
+  searchRecords(
+    query: $query
+    page: $page
+    first: $perPage
+  ){
+    data {
+      id
+      md5
+      thumbnail
+      width
+      height
+    }
+    paginatorInfo {
+      total
+      count
+      currentPage
+      hasMorePages
+    }
+  }
+}

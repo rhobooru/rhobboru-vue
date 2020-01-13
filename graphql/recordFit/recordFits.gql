@@ -1,0 +1,8 @@
+{
+  recordFits{
+    id
+    name
+    description
+    is_default
+  }
+}
