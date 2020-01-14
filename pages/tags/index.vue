@@ -82,7 +82,7 @@ export default {
           align: 'left',
           value: 'name',
         },
-        { text: 'Records', value: 'cache_record_count' },
+        { text: 'Records', value: 'records_count' },
         { text: 'Aliased To', value: 'aliased_to_tag.name' },
       ],
     }
@@ -135,14 +135,13 @@ export default {
           data{
             id
             name
-            aliased_to_tag {
+            aliased_to{
               id
               name
             }
-            cache_record_count
-            cache_folder_count
+            records_count
           }
-          paginatorInfo {
+          paginatorInfo{
             total
             count
             currentPage

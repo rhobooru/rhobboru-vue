@@ -27,7 +27,7 @@
           class="tag-count"
           v-show="showCount"
         >
-          ({{ tag.cache_record_count }})
+          ({{ tag.records_count }})
         </span>
       </v-chip>
     </template>
@@ -43,7 +43,7 @@
 
       <div>
         <span class="overline text-uppercase">records</span>
-        <span class="body-2 pl-2">{{ tag.cache_record_count }}</span>
+        <span class="body-2 pl-2">{{ tag.records_count }}</span>
       </div>
 
       <div class="overline font-italic mt-3">click to view tag</div>

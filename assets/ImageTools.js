@@ -69,7 +69,7 @@ export default class ImageTools {
 
     resizeIgnoreAspect = (file, dimensions) => new Promise((resolve, error) => {
 
-        if (!this.browserSupport || !file.type.match(/image.*/)) return resolve(file);  // early exit - not supported
+        if (!this.browserSupport ) return resolve(file);  // early exit - not supported
 
         if (file.type.match(/image\/gif/)) return resolve(file); // early exit - could be an animated gif
 

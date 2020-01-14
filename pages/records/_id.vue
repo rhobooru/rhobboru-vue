@@ -91,7 +91,7 @@ export default {
             id
             name
             description
-            cache_record_count
+            records_count
           }
         }
       }`

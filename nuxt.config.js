@@ -84,6 +84,10 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
+    defaultAssets: {
+      icons: false,
+    },
+    treeShake: true,
     icons: {
       iconfont: 'fa',
     },
@@ -94,7 +98,7 @@ export default {
         dark: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          secondary: colors.blueGrey.lighten2,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
@@ -106,12 +110,7 @@ export default {
   apollo: {
     authenticationType: 'Bearer',
     clientConfigs: {
-      default: {
-        httpEndpoint: 'http://127.0.0.1:8000/graphql',
-        httpLinkOptions: {
-          mode: 'cors'
-        },
-      }
+        default: '~/client-config.ts'
     },
   },
   /*

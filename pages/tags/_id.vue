@@ -282,7 +282,7 @@
         <v-card>
           <CardHeader
             title="Records"
-            :count="tag.cache_record_count"
+            :count="tag.records_count"
           >
             <template v-slot:action>
               <v-btn
@@ -442,8 +442,8 @@ export default {
           id
           name
           description
-          cache_record_count
-          aliased_to_tag{
+          records_count
+          aliased_to{
             id
             name
           }
