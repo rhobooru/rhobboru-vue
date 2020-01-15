@@ -45,10 +45,16 @@
         @click.prevent="toggleUserDrawer"
       >
         <img
-          :src="$store.state.auth.user.avatar_url"
+          :src="avatar"
           alt="user avatar"
-          v-if="$store.state.auth.isAuthenticated"
+          v-if="avatar"
         >
+        <span 
+          class="white--text display-1"
+          v-else-if="isAuthenticated"
+        >
+          {{ user.username[0] }}
+        </span>
         <v-icon 
           dark
           v-else
@@ -221,6 +227,7 @@ export default {
 
   computed:{
     ...mapGetters({
+      user: 'auth/user'
     }),
 
     activeNavItem(){
@@ -234,6 +241,14 @@ export default {
     isAuthenticated(){
       return this.$store.state.auth.isAuthenticated
     },
+
+    avatar(){
+      if(!this.$store.state.auth.isAuthenticated 
+        || !this.user.avatar_url)
+        return null
+
+      return this.user.avatar_url
+    }
   },
 
   methods:{

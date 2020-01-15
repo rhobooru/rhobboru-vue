@@ -13,12 +13,12 @@
             alt="user avatar"
             v-if="avatar"
           >
-          <v-icon 
-            dark
+          <span 
+            class="white--text display-4"
             v-else
           >
-            fa-user
-          </v-icon>
+            {{ user.username[0] }}
+          </span>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title 
