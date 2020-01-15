@@ -40,7 +40,7 @@
       <v-spacer />
 
       <v-avatar 
-        color="indigo"
+        color="secondary"
         class="user-menu-button"
         @click.prevent="toggleUserDrawer"
       >
@@ -53,10 +53,9 @@
           class="white--text display-1"
           v-else-if="isAuthenticated"
         >
-          {{ user.username[0] }}
+          {{ firstInitial }}
         </span>
-        <v-icon 
-          dark
+        <v-icon
           v-else
         >
           fa-user
@@ -248,7 +247,14 @@ export default {
         return null
 
       return this.user.avatar_url
-    }
+    },
+
+    firstInitial(){
+      if(!this.$store.state.auth.isAuthenticated)
+        return null
+
+      return this.user.username[0]
+    },
   },
 
   methods:{
