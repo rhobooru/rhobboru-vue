@@ -1,9 +1,9 @@
-a {
+.theme--dark a {
   color: #e5e9ec !important;
   caret-color: #f4f4f4 !important;
 }
 
-.v-divider.brighter-divider{
+.theme--dark .v-divider.brighter-divider{
   border-color:rgba(255, 255, 255, 0.3) !important;
 }
 

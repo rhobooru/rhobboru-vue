@@ -1,5 +1,7 @@
 <template>
-  <v-app dark>
+  <v-app
+    :dark="$vuetify.theme.dark"
+  >
 
     <v-app-bar 
       clipped-left 
@@ -82,6 +84,18 @@
             />
           </template>
         </v-toolbar-items>
+
+        <v-spacer />
+
+        <v-btn
+          icon 
+          small
+          @click.prevent="$vuetify.theme.dark = !$vuetify.theme.dark"
+        >
+          <v-icon>
+            fa-adjust
+          </v-icon>
+        </v-btn>
       </template>
 
     </v-app-bar>
@@ -240,8 +254,12 @@ export default {
 </script>
 
 <style>
-  .v-toolbar__extension{
+  .theme--dark .v-toolbar__extension{
     border-top:1px solid rgba(255, 255, 255, 0.24);
+  }
+
+  .theme--light .v-toolbar__extension{
+    border-top:1px solid rgba(19, 19, 19, 0.24);
   }
 
   .user-menu-button{

@@ -1,11 +1,13 @@
 <template>
 
   <v-form
-    @submit.prevent="login"
-    ref="loginForm"
+    @submit.prevent="register"
+    ref="registerForm"
+    v-model="valid"
+    lazy-validation
   >
     <v-list
-      :loading="isLoggingIn"
+      :loading="isRegistering"
       dense
     >
       <v-list-item>
@@ -15,6 +17,7 @@
             label="Username"
             single-line
             required
+            :rules="usernameRules"
           />
         </v-list-item-content>
       </v-list-item>
@@ -27,6 +30,20 @@
             type="password"
             single-line
             required
+            :rules="passwordRules"
+          />
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item>
+        <v-list-item-content>
+          <v-text-field
+            v-model="confirmPassword"
+            label="Confirm password"
+            type="password"
+            single-line
+            required
+            :rules="confirmPasswordRules"
           />
         </v-list-item-content>
       </v-list-item>
@@ -36,13 +53,13 @@
           <v-btn
             color="primary"
             type="submit"
-            @click.prevent="login"
-            :disabled="!hasInput"
+            @click.prevent="register"
+            :disabled="!hasInput || !valid"
           >
             <v-icon left>
-              fa-sign-in-alt
+              fa-edit
             </v-icon>
-            Login
+            Register
           </v-btn>
         </v-list-item-content>
       </v-list-item>
@@ -51,12 +68,12 @@
         <v-list-item-content>
           <v-btn
             color="secondary"
-            @click.prevent="register"
+            @click.prevent="login"
           >
             <v-icon left>
-              fa-edit
+              fa-sign-in-alt
             </v-icon>
-            Register
+            Login
           </v-btn>
         </v-list-item-content>
       </v-list-item>
@@ -74,7 +91,7 @@
         </v-icon>
       </v-avatar>
 
-      Login failed
+      Registration failed
     </v-banner>
   </v-form>
   
@@ -82,24 +99,47 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import loginMutation from '~/graphql/auth/login.gql'
+import registerMutation from '~/graphql/auth/register.gql'
 
 export default {
-  name: 'Login',
+  name: 'Register',
 
   data: () => ({
     username: null,
     password: null,
+    confirmPassword: null,
 
-    isLoggingIn: false,
+    usernameRules: [
+      v => !!v || 'Username is required',
+    ],
+
+    passwordRules: [
+      v => !!v || 'Password is required',
+    ],
+
+    isRegistering: false,
 
     isError: false,
+    valid: true,
   }),
 
   computed:{
     hasInput(){
-      return this.username && this.password
+      return this.username && this.password && this.confirmPassword
     },
+    
+    confirmPasswordRules() {
+      return [
+        v => !!v || 'Password confirmation is required',
+        v => (!!v && v) === this.password || 'Passwords must match',
+      ]
+    },
+  },
+
+  watch: {
+    username: 'validateField',
+    password: 'validateField',
+    confirmPassword: 'validateField',
   },
 
   methods:{
@@ -107,30 +147,36 @@ export default {
       saveLogin: 'auth/login'
     }),
 
-    async login () {
-      this.isLoggingIn = true
+    validateField () {
+      this.$refs.registerForm.validate()
+    },
+
+    async register () {
+      this.isRegistering = true
 
       try {
         const res = await this.$apollo.mutate({
-            mutation: loginMutation,
+            mutation: registerMutation,
             variables: {
               username: this.username,
               password: this.password,
+              passwordConfirm: this.confirmPassword,
             }
-        }).then(({data}) => data && data.login)
+        }).then(({data}) => data && data.register)
         await this.$apolloHelpers.onLogin(res.access_token)
         this.saveLogin({user: res.user})
 
-        this.$emit('logged-in')
+        this.$emit('registered')
       } catch (e) {
         this.showError()
       }
 
-      this.isLoggingIn = false
+      this.isRegistering = false
     },
 
-    register(){
-      this.$emit('register')
+    login(){
+      this.$refs.registerForm.reset()
+      this.$emit('login')
     },
 
     showError(){
