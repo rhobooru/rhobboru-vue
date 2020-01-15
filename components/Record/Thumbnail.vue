@@ -7,11 +7,12 @@
       <v-img
         :lazy-src="imagePlaceholder"
         :src="thumbnail"
-        :height="imageDimensions.height"
-        :width="imageDimensions.width"
+        :max-width="thumbnailSize"
+        :max-height="thumbnailSize"
         contain
         position="center center"
         @load="thumbnailLoaded"
+        eager
       >
       </v-img>
     </nuxt-link>
@@ -33,6 +34,7 @@ export default {
     return {
       imagePlaceholder: imagePlaceholder.src,
       thumbnailSize: 200,
+      aspectRatio: 0,
     }
   },
   
@@ -50,16 +52,16 @@ export default {
     },
 
     imageDimensions(){
-      const ratio = this.record.width / this.record.height
+      this.aspectRatio = this.record.width / this.record.height
       let targetWidth
       let targetHeight 
       
       targetWidth = targetHeight = Math.min(this.thumbnailSize, Math.max(this.record.width, this.record.height));
 
-      if (ratio < 1) {
-          targetWidth = targetHeight * ratio;
+      if (this.aspectRatio < 1) {
+          targetWidth = targetHeight * this.aspectRatio;
       } else {
-          targetHeight = targetWidth / ratio;
+          targetHeight = targetWidth / this.aspectRatio;
       }
 
       return {
@@ -90,7 +92,6 @@ export default {
   margin-top: 50%;
   transform: translateY(-50%);
   position: relative;
-  text-align: center;
 }
 
 .thumbnail .v-image {
