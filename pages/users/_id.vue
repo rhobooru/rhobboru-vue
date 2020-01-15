@@ -95,7 +95,7 @@
 
       <v-card-actions>
         <v-btn
-          color="error darken-1"
+          color="error"
         >
           <v-icon left>
             fa-flag
@@ -115,7 +115,7 @@
         </v-btn>
 
         <v-btn
-          color="pink lighten-1"
+          color="accent"
         >
           <v-icon left>
             fa-heart

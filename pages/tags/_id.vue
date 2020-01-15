@@ -73,7 +73,7 @@
                 >
                   <template v-slot:activator="{ on: hideTagDialog }">
                     <v-btn
-                      color="warning darken-2 mx-1"
+                      color="warning mx-1"
                       v-on="{...tooltip, ...hideTagDialog}"
                     >
                       <v-icon left>
@@ -84,7 +84,7 @@
                   </template>
                   <v-card>
                     <v-card-title
-                      class="title warning darken-2 text-uppercase"
+                      class="title warning text-uppercase"
                     >
                       Hide tag
                     </v-card-title>
@@ -120,7 +120,7 @@
 
                     <v-card-actions>
                       <v-btn
-                        color="warning darken-2"
+                        color="warning"
                         @click="hideTagDialog = false"
                       >
                         <v-icon left>
@@ -308,7 +308,7 @@
 
 
     <v-snackbar
-      color="error darken-1"
+      color="error"
       v-model="errorSnackbar"
     >
       Something went wrong

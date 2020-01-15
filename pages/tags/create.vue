@@ -65,7 +65,7 @@
     </v-card>
 
     <v-snackbar
-      color="success darken-2"
+      color="success"
       v-model="successSnackbar"
       :timeout="snackbarTimeout"
     >
@@ -79,7 +79,7 @@
     </v-snackbar>
 
     <v-snackbar
-      color="error darken-1"
+      color="error"
       v-model="errorSnackbar"
     >
       Something went wrong

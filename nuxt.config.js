@@ -87,23 +87,31 @@ export default {
     defaultAssets: {
       icons: false,
     },
-    treeShake: true,
     icons: {
       iconfont: 'fa',
     },
-    customVariables: ['~/assets/variables.scss'],
+    // customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
+        light: {
+          primary: '#176FC6',
+          accent: '#AB4393',
+          secondary: '#30B1DC',
+          success: '#4CAF50',
+          info: '#97BAD6',
+          warning: '#FB8C00',
+          error: '#EA5858'
+        },
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.blueGrey.lighten2,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
+          primary: '#0F8CD2',
+          accent: '#C32890',
+          secondary: '#13AE82',
+          success: '#0CB41C',
+          info: '#A4BFD4',
+          warning: '#E59518',
+          error: '#D42828'
+        },
       }
     }
   },

@@ -25,9 +25,17 @@
         >
           <UserMenu 
             v-if="isAuthenticated"
+            @logged-out="isLoggingIn = true"
           />
           <Login 
-            v-else
+            v-else-if="isLoggingIn"
+            @register="isRegistering = true; isLoggingIn = false"
+            @logged-in="isLoggingIn = false"
+          />
+          <Register 
+            v-else-if="isRegistering"
+            @login="isRegistering = false; isLoggingIn = true"
+            @registered="isRegistering = false"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -57,6 +65,7 @@ import gql from 'graphql-tag'
 import QuickList from '~/components/QuickList'
 import UserMenu from '~/components/User/UserMenu'
 import Login from '~/components/Auth/Login'
+import Register from '~/components/Auth/Register'
 
 export default {
   name: 'UserSideBar',
@@ -65,6 +74,7 @@ export default {
     QuickList,
     UserMenu,
     Login,
+    Register,
   },
 
   props:[
@@ -72,8 +82,13 @@ export default {
   ],
 
   data: () => ({
-    
+    isLoggingIn: true,
+    isRegistering: false,
   }),
+
+  created(){
+    this.isLoggingIn = !this.isAuthenticated
+  },
 
   watch: {
     

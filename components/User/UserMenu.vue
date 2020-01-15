@@ -108,13 +108,15 @@ export default {
 
     async logOut () {
       try {
-          const res = await this.$apollo.mutate({
-              mutation: logoutMutation
-          }).then(({data}) => data && data.logout)
-          await this.$apolloHelpers.onLogout()
-          this.saveLogout()
+        const res = await this.$apollo.mutate({
+            mutation: logoutMutation
+        }).then(({data}) => data && data.logout)
+        await this.$apolloHelpers.onLogout()
+        this.saveLogout()
+
+        this.$emit('logged-out')
       } catch (e) {
-          console.error(e)
+        console.error(e)
       }
     },
   }

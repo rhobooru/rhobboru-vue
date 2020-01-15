@@ -10,7 +10,7 @@
       <v-chip
         nuxt
         :to="editable ? null : tagUrl"
-        class="mb-2"
+        class="accent mb-2"
         :close="editable"
         @click:close="closeTag"
         :input-value="tag.isNew"
