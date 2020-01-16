@@ -1,24 +1,33 @@
 import meQuery from '~/graphql/auth/me.gql'
+import Vue from 'vue'
 
 export const state = () => ({
   isAuthenticated: false,
   user: null,
+  cachedAvatarUrl: Vue.$storage.get('avatarUrl', null),
 })
 
 export const mutations = {
   login (state, { user }) {
     state.user = JSON.parse(JSON.stringify(user))
     state.isAuthenticated = true
+
+    Vue.$storage.set('avatarUrl', user.avatar_url)
   },
 
   updateUser (state, { user }) {
     state.user = JSON.parse(JSON.stringify(user))
     state.isAuthenticated = true
+
+    Vue.$storage.set('avatarUrl', user.avatar_url)
   },
 
   logout (state) {
     state.user = null
     state.isAuthenticated = false
+    state.cachedAvatarUrl = null
+
+    Vue.$storage.remove('avatarUrl')
   },
 }
 
@@ -46,6 +55,13 @@ export const getters = {
       return {}
 
     return state.user
+  },
+
+  avatarUrl: (state) => {
+    if(state.user)
+      return state.user.avatar_url
+
+    return state.cachedAvatarUrl
   },
 }
 

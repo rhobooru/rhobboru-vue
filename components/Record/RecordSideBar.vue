@@ -68,7 +68,7 @@
       Cancel
     </v-btn>
 
-    <SectionHeader
+    <section-header
       class="mt-10 mb-5"
     >
       <span class="title">
@@ -80,7 +80,7 @@
           ({{ displayTags.length }})
         </span>
       </span>
-    </SectionHeader>
+    </section-header>
 
     <v-autocomplete
       v-if="isEdit"
@@ -124,13 +124,13 @@
       No tags found
     </div>
 
-    <SectionHeader
+    <section-header
       class="mt-10 mb-5"
     >
       <span class="title">
         Metadata
       </span>
-    </SectionHeader>
+    </section-header>
 
     <v-icon left small>fa-eye-slash</v-icon> Content Rating
     <br>
@@ -139,7 +139,7 @@
       v-text="record.content_rating.name"
       v-if="!isEdit"
     ></kbd>
-    <SelectContentRating
+    <select-content-rating
       v-else
       :contentRating="record.content_rating"
       @change="(selected) => { editableRecord.content_rating = selected }"

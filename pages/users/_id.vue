@@ -1,7 +1,7 @@
 <template>
 
   <v-container
-    v-if="!!user"
+    v-if="!!user && !loadingUser"
   >
 
     <v-card>
@@ -162,7 +162,7 @@
   </v-container>
 
   <v-container
-    v-else
+    v-else-if="!loadingUser"
   >
     <v-layout justify-center align-center>
       <v-flex xs12 sm8 md6>
@@ -213,6 +213,7 @@ export default {
 
   data: () =>({
     user: null,
+    loadingUser: true,
   }),
 
   created(){
@@ -309,6 +310,8 @@ export default {
     }),
 
     async getUser () {
+      this.loadingUser = true
+
       const query = gql`query($id: ID!){
         user(id: $id) {
           id
@@ -360,6 +363,8 @@ export default {
           variables
         }).then(({data}) => {
           this.user = data.user
+        }).finally(() => {
+          this.loadingUser = false
         })
     },
   },

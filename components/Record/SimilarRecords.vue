@@ -2,7 +2,7 @@
   <v-card
     v-if="recordsToDisplay.length"
   >
-    <CardHeader
+    <card-header
       title="Similar Records"
       :count="totalToDisplay"
     >
@@ -16,10 +16,10 @@
           View all
         </v-btn>
       </template>
-    </CardHeader>
+    </card-header>
 
     <v-card-text>
-      <ThumbnailSlider
+      <thumbnail-slider
         :records="recordsToDisplay"
       />
     </v-card-text>

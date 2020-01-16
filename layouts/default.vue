@@ -40,14 +40,14 @@
       <v-spacer />
 
       <v-avatar 
-        color="secondary"
+        :color="avatarUrl ? '' : 'secondary'"
         class="user-menu-button"
         @click.prevent="toggleUserDrawer"
       >
         <img
-          :src="avatar"
+          :src="avatarUrl"
           alt="user avatar"
-          v-if="avatar"
+          v-if="avatarUrl"
         >
         <span 
           class="white--text display-1"
@@ -95,7 +95,7 @@
         <v-btn
           icon 
           small
-          @click.prevent="$vuetify.theme.dark = !$vuetify.theme.dark"
+          @click.prevent="setTheme(!$vuetify.theme.dark)"
         >
           <v-icon>
             fa-adjust
@@ -224,9 +224,14 @@ export default {
     }
   },
 
+  created() {
+    this.setTheme(this.$storage.get('darkTheme', true))
+  },
+
   computed:{
     ...mapGetters({
-      user: 'auth/user'
+      user: 'auth/user',
+      avatarUrl: 'auth/avatarUrl'
     }),
 
     activeNavItem(){
@@ -239,14 +244,6 @@ export default {
 
     isAuthenticated(){
       return this.$store.state.auth.isAuthenticated
-    },
-
-    avatar(){
-      if(!this.$store.state.auth.isAuthenticated 
-        || !this.user.avatar_url)
-        return null
-
-      return this.user.avatar_url
     },
 
     firstInitial(){
@@ -269,7 +266,12 @@ export default {
 
     resolvedRoute(to){
         return this.$router.resolve(to)
-    }
+    },
+
+    setTheme(value){
+      this.$vuetify.theme.dark = value
+      this.$storage.set('darkTheme', value)
+    },
   },
 }
 </script>

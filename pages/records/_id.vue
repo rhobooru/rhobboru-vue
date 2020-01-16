@@ -1,19 +1,19 @@
 <template>
   <div>
-      <RecordSideBar
+      <record-side-bar
         :record="record"
         @saved="saved"
         @get-full-res="showPreview = false"
         @preload-full-res="preloadFullRes = true"
       />
 
-      <RecordMedia 
+      <record-media 
         :showPreview="showPreview"
         :record="record"
         :preloadFullRes="preloadFullRes"
       />
 
-      <SimilarRecords 
+      <similar-records 
         :similarToRecord="record"
         class="mt-7"
       />

@@ -7,7 +7,7 @@
       v-for="record in records" 
       :key="record.id"
     >
-      <Thumbnail 
+      <thumbnail 
         :record="record"
       />
     </v-slide-item>
