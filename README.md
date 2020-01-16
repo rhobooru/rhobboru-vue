@@ -2,23 +2,48 @@
 
 # rhovue
 
-> Official web frontend for a rhobooru server
+> Official web frontend for [rhobooru](htps://github/com/rhobboru/rhobooru) backend servers.
 
-## Build Setup
 
-``` bash
-# install dependencies
-$ npm run install
+## Development
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+To develop locally, you'll need `Node.js 12` and `npm` installed.
 
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
+Clone the repository
+```bash
+git clone https://github.com/rhobooru/rhovue
+cd rhovue
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+Make sure you're on the dev branch
+```branch
+git checkout dev
+```
+
+Install the project dependencies
+``` bash
+npm run install
+```
+
+Start the hot-reload dev server
+```bash
+npm run dev
+```
+
+Navigate to `http://localhost:3000`
+
+### Production Build
+
+To build the `/dist` folder for deployment, run
+```bash
+npm run build
+```
+
+Nuxt will automatically build the site in `SPA` mode.
+
+To test the production build, run
+```bash
+npm run start
+```
+
+You can then publish the `/dist` folder to a hosting environment online.
