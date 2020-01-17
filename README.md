@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Frhobooru%2Frhovue%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/rhobooru/rhovue/goto?ref=master)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/rhobooru/rhovue) [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Frhobooru%2Frhovue%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/rhobooru/rhovue/goto?ref=master)
 
 # rhovue
 
@@ -14,6 +14,6 @@ If you're looking for an all-in-one version of [rhobooru](https://github/com/rho
 
 [View the documentation](https://github.com/rhobooru/rhovue/wiki/Development-&-Contributing)
 
-### Build & Deploy
+## Deployment
 
 [View the documentation](https://github.com/rhobooru/rhovue/wiki/Deployment)
