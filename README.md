@@ -2,17 +2,17 @@
 
 # rhovue
 
-> Official web frontend for [rhobooru](htps://github/com/rhobboru/rhobooru)
+> Official web frontend for [rhobooru](https://github/com/rhobboru/rhobooru)
 
-rhovue is a Single Page Application built on `Nuxt`->`Vue`->`Vuetify` to offer a beautiful, responsive, statically hosted frontend for any rhobooru server.
+rhovue is a Single Page Application built on `Nuxt`->`Vue`->`Vuetify` to offer a beautiful, responsive, statically hosted frontend for any [rhobooru](htps://github/com/rhobboru/rhobooru) server.
 
-rhovue offers 100% feature parity with the official rhobooru API and is the most stable way to interact with rhobooru services. rhovue and rhobooru features are developed in tandem and releases will always have the same [major].[minor] version numbers, according to semantic versioning.
+rhovue offers 100% feature parity with the official [rhobooru](https://github/com/rhobboru/rhobooru) API and is the most stable way to interact with [rhobooru](https://github/com/rhobboru/rhobooru) services. rhovue and [rhobooru](https://github/com/rhobboru/rhobooru) features are developed in tandem and releases will always have the same [major].[minor] version numbers, according to semantic versioning.
 
-If you're looking for an all-in-one version of rhobooru for personal use, check out our docker image, instead: [rhodock](https://github.com/rhobooru/rhodock)
+If you're looking for an all-in-one version of [rhobooru](https://github/com/rhobboru/rhobooru) for personal use, check out our docker image, instead: [rhodock](https://github.com/rhobooru/rhodock)
 
 ## Development
 
-To develop locally, you'll need `Node.js 12` and `npm` installed.
+To develop locally, you'll need `Node.js 12` and `npm` installed. You will also likely need a [rhobooru](https://github/com/rhobboru/rhobooru) server running somewhere to develop against.
 
 Clone the repository
 ```bash
