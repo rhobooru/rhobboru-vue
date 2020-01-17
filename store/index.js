@@ -2,6 +2,9 @@ import meQuery from '~/graphql/auth/me.gql'
 
 export const actions = {
   nuxtClientInit({ commit }, context) {
+    context.store.dispatch('config/getConfig')
+
+
     const hasToken = !!this.$apolloHelpers.getToken()
     
     if(!hasToken){

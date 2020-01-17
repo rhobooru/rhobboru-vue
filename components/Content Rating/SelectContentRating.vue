@@ -9,6 +9,8 @@
     persistent-hint
     return-object
     @change="selectionChanged"
+    required
+    :rules="[v => !!v || 'Content rating is required']"
   />
 </template>
 
@@ -33,6 +35,12 @@ export default {
     this.getContentRatings()
 
     this.myContentRating = this.contentRating
+  },
+
+  watch:{
+    myContentRating(){
+      this.selectionChanged()
+    },
   },
 
   computed: {
