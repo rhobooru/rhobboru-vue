@@ -2,8 +2,13 @@
 
 # rhovue
 
-> Official web frontend for [rhobooru](htps://github/com/rhobboru/rhobooru) backend servers.
+> Official web frontend for [rhobooru](htps://github/com/rhobboru/rhobooru)
 
+rhovue is a Single Page Application built on `Nuxt`->`Vue`->`Vuetify` to offer a beautiful, responsive, statically hosted frontend for any rhobooru server.
+
+rhovue offers 100% feature parity with the official rhobooru API and is the most stable way to interact with rhobooru services. rhovue and rhobooru features are developed in tandem and releases will always have the same [major].[minor] version numbers, according to semantic versioning.
+
+If you're looking for an all-in-one version of rhobooru for personal use, check out our docker image, instead: [rhodock](https://github.com/rhobooru/rhodock)
 
 ## Development
 
@@ -30,7 +35,12 @@ Start the hot-reload dev server
 npm run dev
 ```
 
-Navigate to `http://localhost:3000`
+Navigate to `http://localhost:3000`. Changes made to the source files will automatically be reflected in the open browser window.
+
+Tests can be run with
+```bash
+npm run test
+```
 
 ### Production Build
 
@@ -45,5 +55,6 @@ To test the production build, run
 ```bash
 npm run start
 ```
+and navigate to `http://localhost:3000`. Changes to the source files in this mode will not be seen until you run `npm run build` again.
 
 You can then publish the `/dist` folder to a hosting environment online.
