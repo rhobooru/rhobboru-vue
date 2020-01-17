@@ -39,68 +39,24 @@
 
       <v-spacer />
 
-      <v-avatar 
-        :color="avatarUrl ? '' : 'secondary'"
-        class="user-menu-button"
-        @click.prevent="toggleUserDrawer"
-      >
-        <img
-          :src="avatarUrl"
-          alt="user avatar"
-          v-if="avatarUrl"
-        >
-        <span 
-          class="white--text display-1"
-          v-else-if="isAuthenticated"
-        >
-          {{ firstInitial }}
-        </span>
-        <v-icon
-          v-else
-        >
-          fa-user
-        </v-icon>
-      </v-avatar>
+      <nav-avatar />
 
-    
       <template v-slot:extension>
-        <v-app-bar-nav-icon @click.stop="toggleDrawer" />
+        <side-bar-toggle />
 
-        <v-toolbar-items
-          v-show="childNavItems"
-        >
-          <template
-            v-for="item in childNavItems"
-          >
-            <v-btn 
-              :key="item.title"
-              nuxt 
-              :to="item.route" 
-              :exact="item.exact"
-              text
-            >
-              <v-icon left>{{ item.icon }}</v-icon>
-              {{ item.title }}
-            </v-btn>
-            <v-divider 
-              :key="item.title + 'div'"
-              vertical
-              inset
-            />
-          </template>
-        </v-toolbar-items>
+        <v-divider 
+          v-show="$store.state.drawer.pageHasDrawer || activeNavItem.children"
+          vertical
+          inset
+        />
+        
+        <sub-nav-link 
+          :nav-item="activeNavItem"
+        />
 
         <v-spacer />
 
-        <v-btn
-          icon 
-          small
-          @click.prevent="setTheme(!$vuetify.theme.dark)"
-        >
-          <v-icon>
-            fa-adjust
-          </v-icon>
-        </v-btn>
+        <theme-toggle />
       </template>
 
     </v-app-bar>
@@ -119,19 +75,24 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
 import UserSideBar from '~/components/UserSideBar'
+import SubNavLink from '~/components/SubNavLinks'
+import ThemeToggle from '~/components/ThemeToggle'
+import SideBarToggle from '~/components/SideBarToggle'
+import NavAvatar from '~/components/NavAvatar'
 
 export default {
   components: {
     UserSideBar,
+    SubNavLink,
+    ThemeToggle,
+    SideBarToggle,
+    NavAvatar,
   },
 
   data() {
     return {
       title: 'rhobooru',
-
-      test: [],
 
       navItems: [
         {
@@ -224,53 +185,19 @@ export default {
     }
   },
 
-  created() {
-    this.setTheme(this.$storage.get('darkTheme', true))
-  },
-
   computed:{
-    ...mapGetters({
-      user: 'auth/user',
-      avatarUrl: 'auth/avatarUrl'
-    }),
-
     activeNavItem(){
       return this.navItems.find(f => this.$route.fullPath.startsWith(this.$router.resolve(f.route).route.fullPath)) || {}
-    },
-
-    childNavItems(){
-      return this.activeNavItem.children
-    },
-
-    isAuthenticated(){
-      return this.$store.state.auth.isAuthenticated
-    },
-
-    firstInitial(){
-      if(!this.$store.state.auth.isAuthenticated)
-        return null
-
-      return this.user.username[0]
     },
   },
 
   methods:{
-    ...mapMutations({
-      toggleDrawer: 'drawer/toggle',
-      toggleUserDrawer: 'drawer/toggleUserDrawer',
-    }),
-
     isExactActive(to){
         return this.$route.fullPath == this.resolvedRoute(to).route.fullPath
     },
 
     resolvedRoute(to){
         return this.$router.resolve(to)
-    },
-
-    setTheme(value){
-      this.$vuetify.theme.dark = value
-      this.$storage.set('darkTheme', value)
     },
   },
 }
@@ -283,9 +210,5 @@ export default {
 
   .theme--light .v-toolbar__extension{
     border-top:1px solid rgba(19, 19, 19, 0.24);
-  }
-
-  .user-menu-button{
-    cursor: pointer;
   }
 </style>

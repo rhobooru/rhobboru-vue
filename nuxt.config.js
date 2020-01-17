@@ -9,7 +9,8 @@ export default {
       //   path: '/records/:page?',
       //   component: resolve(__dirname, 'pages/records/index.vue')
       // })
-    }
+    },
+    middleware: 'resetDrawer'
   },
   /*
    ** Headers of the page

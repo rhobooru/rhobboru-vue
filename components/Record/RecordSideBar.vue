@@ -389,6 +389,8 @@ export default {
     },
 
     getFullRes(){
+      console.log("here")
+
       this.showPreview = false
 
       this.$emit('get-full-res')

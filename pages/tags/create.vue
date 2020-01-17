@@ -12,9 +12,16 @@
             :rules="nameRules"
             label="Name"
             required
+            class="mb-8"
           ></v-text-field>
 
-          <br><br>
+          <v-text-field
+            v-model="summary"
+            :counter="maxSummaryLength"
+            :rules="summaryRules"
+            label="Summary"
+            class="mb-8"
+          ></v-text-field>
 
           <div class="subtitle-1 pb-2">Description</div>
           <Editor 
@@ -109,6 +116,9 @@ export default {
     name: '',
     maxNameLength: 255,
 
+    summary: '',
+    maxSummaryLength: 255,
+
     description: '',
 
     successSnackbar: false,
@@ -122,6 +132,12 @@ export default {
       return [
         v => !!v || 'Name is required',
         v => (v && v.length <= this.maxNameLength) || 'Name must be less than 255 characters',
+      ]
+    },
+
+    summaryRules(){
+      return [
+        v => (v.length <= this.maxSummaryLength) || 'Summary must be less than 255 characters',
       ]
     },
   },
@@ -138,10 +154,12 @@ export default {
       const mutation = gql`mutation(
           $name: String!
           $description: String
+          $summary: String
         ){
           createTag(
             name: $name
             description: $description
+            summary: $summary
           ){
             id
           }
@@ -149,6 +167,7 @@ export default {
       const variables = {
         name: this.name,
         description: this.description,
+        summary: this.summary,
       }
 
       return this.$apollo.mutate({mutation, variables})

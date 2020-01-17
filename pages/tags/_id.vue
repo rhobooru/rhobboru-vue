@@ -3,22 +3,22 @@
     <v-row>
       <v-col>
         <v-card>
-          <CardHeader
+          <card-header
             class="display-1"
           >
             <template v-slot:title>
               <span
                 v-if="!editingTag"
-              >
-                {{ tag.name }}
-              </span>
+                v-text="tag.name"
+              />
               <v-text-field
                 v-else
-                class="headline"
+                class="headline editable-name"
                 v-model="editedName"
                 label="Tag name"
                 placeholder="name..."
-                solo-inverted
+                filled
+                single-line
                 dense
                 :counter="255"
               />
@@ -56,7 +56,28 @@
                 Save
               </v-btn>
             </template>
-          </CardHeader>
+          </card-header>
+
+          <v-card-text>
+            <span
+              v-if="!editingTag"
+              v-text="tag.summary"
+            />
+            <v-textarea
+              v-else
+              v-model="editedSummary"
+              label="Summary"
+              placeholder="summary..."
+              :counter="255"
+              clearable
+              auto-grow
+              rows="1"
+              hint="Summaries should be short and sweet"
+              persistent-hint
+              filled
+            />
+          </v-card-text>
+
           <v-card-actions
             v-show="editingTag"
           >
@@ -223,7 +244,7 @@
     <v-row>
       <v-col>
         <v-card>
-          <CardHeader
+          <card-header
             title="Description"
           >
             <template v-slot:action>
@@ -259,7 +280,7 @@
                 Save
               </v-btn>
             </template>
-          </CardHeader>
+          </card-header>
 
           <v-card-text
             v-html="tag.description"
@@ -268,7 +289,7 @@
           <v-card-text
             v-else
           >
-            <Editor 
+            <editor 
               :content="tag.description" 
               :placeholder="'tag description...'"
               @changed="descriptionChanged"
@@ -280,7 +301,7 @@
     <v-row>
       <v-col>
         <v-card>
-          <CardHeader
+          <card-header
             title="Records"
             :count="tag.records_count"
           >
@@ -294,10 +315,10 @@
                 View all
               </v-btn>
             </template>
-          </CardHeader>
+          </card-header>
 
           <v-card-text>
-            <ThumbnailSlider
+            <thumbnail-slider
               :records="records"
             />
           </v-card-text>
@@ -345,6 +366,7 @@ export default {
 
       editingTag: false,
       editedName: '',
+      editedSummary: '',
 
       hideTagDialog: false,
       deleteTagDialog: false,
@@ -373,21 +395,34 @@ export default {
     },
 
     saveTag(){
-      const mutation = gql`mutation($id: ID!, $name: String){
-        updateTag(id: $id, name: $name){
+      const mutation = gql`mutation(
+        $id: ID!
+        $name: String
+        $summary: String
+      ){
+        updateTag(
+          id: $id
+          name: $name
+          summary: $summary
+        ){
           id
           name
+          summary
         }
       }`
 
       const variables = {
         id: this.tag.id,
         name: this.editedName,
+        summary: this.editedSummary,
       }
 
       return this.$apollo.mutate({mutation, variables})
         .then(({ data }) => {
           this.tag.name = data.updateTag.name
+          this.tag.summary = data.updateTag.summary
+          this.editedName = this.tag.name
+          this.editedSummary = this.tag.summary
           this.editingTag = false
         })
         .catch(({ error }) => {
@@ -442,6 +477,7 @@ export default {
           id
           name
           description
+          summary
           records_count
           aliased_to{
             id
@@ -468,6 +504,7 @@ export default {
         .then(({ data }) => {
           this.tag = data.tag
           this.editedName = this.tag.name
+          this.editedSummary = this.tag.summary
         })
     },
   },
@@ -475,4 +512,7 @@ export default {
 </script>
 
 <style scoped>
+.editable-name{
+  max-width:400px;
+}
 </style>
