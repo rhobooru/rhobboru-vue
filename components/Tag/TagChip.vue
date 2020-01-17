@@ -16,6 +16,7 @@
         :input-value="tag.isNew"
         :disabled="disabled"
         v-on="on"
+        max-width="200"
       >
         <span
           class="tag-name text-truncate"
@@ -36,9 +37,9 @@
         {{ tag.name }}
       </div>
 
-      <div v-show="tag.description">
-        <span class="overline text-uppercase">desc</span>
-        <span class="body-2 pl-2" v-html="tag.description" />
+      <div v-show="tag.summary">
+        <span class="overline text-uppercase">summary</span>
+        <span class="body-2 pl-2" v-text="tag.summary" />
       </div>
 
       <div>
@@ -46,7 +47,18 @@
         <span class="body-2 pl-2">{{ tag.records_count }}</span>
       </div>
 
-      <div class="overline font-italic mt-3">click to view tag</div>
+      <div 
+        class="overline font-italic mt-3"
+        v-if="editable"
+      >
+        click the X to remove
+      </div>
+      <div 
+        class="overline font-italic mt-3"
+        v-else
+      >
+        click to view tag
+      </div>
     </div>
   </v-tooltip>
 </template>
@@ -102,6 +114,6 @@ export default {
 <style>
 .tag-tooltip{
   text-align:left;
-  max-width: 300px;
+  background-color: rgba(50,50,50,1);
 }
 </style>

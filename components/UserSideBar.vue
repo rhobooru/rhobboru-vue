@@ -23,39 +23,51 @@
         <v-expansion-panel-content
           class="user-panel-container"
         >
-          <user-menu 
-            v-if="isAuthenticated"
-            @logged-out="isLoggingIn = true"
-          />
-          <login 
-            v-else-if="isLoggingIn"
-            @register="isRegistering = true; isLoggingIn = false"
-            @logged-in="isLoggingIn = false"
-          />
-          <register 
-            v-else-if="isRegistering"
-            @login="isRegistering = false; isLoggingIn = true"
-            @registered="isRegistering = false"
-          />
+          <transition
+            name="slide-x-reverse-transition"
+            mode="out-in"
+          >
+            <user-menu 
+              v-if="isAuthenticated"
+              @logged-out="isLoggingIn = true"
+              key="authed"
+            />
+            <login 
+              v-else-if="isLoggingIn"
+              @register="isRegistering = true; isLoggingIn = false"
+              @logged-in="isLoggingIn = false"
+              key="login"
+            />
+            <register 
+              v-else-if="isRegistering"
+              @login="isRegistering = false; isLoggingIn = true"
+              @registered="isRegistering = false"
+              key="register"
+            />
+          </transition>
         </v-expansion-panel-content>
       </v-expansion-panel>
 
-      <v-expansion-panel
-        v-if="isAuthenticated"
+      <transition
+        name="scroll-y-transition"
       >
-        <v-expansion-panel-header>
-          <div
-            class="text-truncate title"
-          >
-            Quick List
-          </div>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content
-          class="quick-list-container"
+        <v-expansion-panel
+          v-if="isAuthenticated"
         >
-          <quick-list />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+          <v-expansion-panel-header>
+            <div
+              class="text-truncate title"
+            >
+              Quick List
+            </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content
+            class="quick-list-container"
+          >
+            <quick-list />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </transition>
     </v-expansion-panels>
   </v-navigation-drawer>
 </template>

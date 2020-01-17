@@ -22,6 +22,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapMutations } from 'vuex'
 import RecordMedia from '~/components/Record/RecordMedia'
 import SimilarRecords from '~/components/Record/SimilarRecords'
 import RecordSideBar from '~/components/Record/RecordSideBar'
@@ -46,11 +47,16 @@ export default {
     preloadFullRes: false,
   }),
   
-  created: function () {
+  created() {
     this.getRecord()
+    this.setPageHasDrawer({value: this.$route.name})
   },
 
   methods:{ 
+    ...mapMutations({
+      setPageHasDrawer: 'drawer/setPageHasDrawer',
+    }),
+
     async saved(){
       await this.getRecord(true)
     },
@@ -90,7 +96,7 @@ export default {
           tags{
             id
             name
-            description
+            summary
             records_count
           }
         }

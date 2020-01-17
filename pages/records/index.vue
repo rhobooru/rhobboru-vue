@@ -45,6 +45,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { mapMutations } from 'vuex'
 import Thumbnail from '~/components/Record/Thumbnail.vue'
 import searchRecordsQuery from '~/graphql/record/searchRecords.gql'
 import SearchBar from '~/components/Record/SearchBar.vue'
@@ -68,8 +69,9 @@ export default {
     }
   },
   
-  mounted: function () {
+  created: function () {
     this.getRecords()
+    this.setPageHasDrawer({value: this.$route.name})
   },
 
   computed: {
@@ -87,6 +89,10 @@ export default {
   },
 
   methods:{
+    ...mapMutations({
+      setPageHasDrawer: 'drawer/setPageHasDrawer',
+    }),
+
     pushPageState(){
       history.pushState(
         {},
