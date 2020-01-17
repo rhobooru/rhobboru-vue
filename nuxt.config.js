@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+const isDev = process.env.NODE_ENV !== 'production'
 
 export default {
   mode: 'spa',
@@ -44,6 +44,7 @@ export default {
    */
   plugins: [
     '~/plugins/TiptapVuetify',
+    '~/plugins/Vue2Storage',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -62,7 +63,7 @@ export default {
 
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
+    //'@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     '@nuxtjs/apollo',
@@ -84,15 +85,12 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    defaultAssets: {
-      icons: false,
-    },
+    defaultAssets: false,
     icons: {
       iconfont: 'fa',
     },
     // customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
       themes: {
         light: {
           primary: '#176FC6',
@@ -120,6 +118,18 @@ export default {
     clientConfigs: {
         default: '~/client-config.ts'
     },
+  },
+  pwa: {
+    manifest: {
+      lang: 'en',
+      name: "PWATestApp",
+      short_name: "PWA/Nuxt - Test App",
+      display: 'standalone',
+      theme_color: '#F11010',
+    },
+    workbox: {
+      dev: isDev
+    }
   },
   /*
    ** Build configuration

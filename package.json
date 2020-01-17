@@ -23,7 +23,8 @@
     "graphql-tag": "^2.10.1",
     "nuxt": "^2.0.0",
     "nuxt-client-init-module": "^0.1.7",
-    "tiptap-vuetify": "^2.10.0"
+    "tiptap-vuetify": "^2.10.0",
+    "vue2-storage": "^5.0.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.12.0",

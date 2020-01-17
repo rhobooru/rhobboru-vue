@@ -40,17 +40,22 @@
       <v-spacer />
 
       <v-avatar 
-        color="indigo"
+        :color="avatarUrl ? '' : 'secondary'"
         class="user-menu-button"
         @click.prevent="toggleUserDrawer"
       >
         <img
-          :src="$store.state.auth.user.avatar_url"
+          :src="avatarUrl"
           alt="user avatar"
-          v-if="$store.state.auth.isAuthenticated"
+          v-if="avatarUrl"
         >
-        <v-icon 
-          dark
+        <span 
+          class="white--text display-1"
+          v-else-if="isAuthenticated"
+        >
+          {{ firstInitial }}
+        </span>
+        <v-icon
           v-else
         >
           fa-user
@@ -90,7 +95,7 @@
         <v-btn
           icon 
           small
-          @click.prevent="$vuetify.theme.dark = !$vuetify.theme.dark"
+          @click.prevent="setTheme(!$vuetify.theme.dark)"
         >
           <v-icon>
             fa-adjust
@@ -219,8 +224,14 @@ export default {
     }
   },
 
+  created() {
+    this.setTheme(this.$storage.get('darkTheme', true))
+  },
+
   computed:{
     ...mapGetters({
+      user: 'auth/user',
+      avatarUrl: 'auth/avatarUrl'
     }),
 
     activeNavItem(){
@@ -233,6 +244,13 @@ export default {
 
     isAuthenticated(){
       return this.$store.state.auth.isAuthenticated
+    },
+
+    firstInitial(){
+      if(!this.$store.state.auth.isAuthenticated)
+        return null
+
+      return this.user.username[0]
     },
   },
 
@@ -248,7 +266,12 @@ export default {
 
     resolvedRoute(to){
         return this.$router.resolve(to)
-    }
+    },
+
+    setTheme(value){
+      this.$vuetify.theme.dark = value
+      this.$storage.set('darkTheme', value)
+    },
   },
 }
 </script>

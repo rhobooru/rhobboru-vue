@@ -23,16 +23,16 @@
         <v-expansion-panel-content
           class="user-panel-container"
         >
-          <UserMenu 
+          <user-menu 
             v-if="isAuthenticated"
             @logged-out="isLoggingIn = true"
           />
-          <Login 
+          <login 
             v-else-if="isLoggingIn"
             @register="isRegistering = true; isLoggingIn = false"
             @logged-in="isLoggingIn = false"
           />
-          <Register 
+          <register 
             v-else-if="isRegistering"
             @login="isRegistering = false; isLoggingIn = true"
             @registered="isRegistering = false"
@@ -53,7 +53,7 @@
         <v-expansion-panel-content
           class="quick-list-container"
         >
-          <QuickList />
+          <quick-list />
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -88,10 +88,6 @@ export default {
 
   created(){
     this.isLoggingIn = !this.isAuthenticated
-  },
-
-  watch: {
-    
   },
 
   computed: {

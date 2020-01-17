@@ -1,11 +1,13 @@
 <template>
 
-  <v-container>
+  <v-container
+    v-if="!!user && !loadingUser"
+  >
 
     <v-card>
-       <v-list-item>
+      <v-list-item>
         <v-list-item-avatar 
-          color="grey"
+          color="secondary"
           :size="100"
         >
           <img
@@ -13,12 +15,12 @@
             alt="user avatar"
             v-if="avatar"
           >
-          <v-icon 
-            dark
+          <span 
+            class="white--text display-4"
             v-else
           >
-            fa-user
-          </v-icon>
+            {{ firstInitial }}
+          </span>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title 
@@ -158,7 +160,40 @@
     </v-card>
 
   </v-container>
-  
+
+  <v-container
+    v-else-if="!loadingUser"
+  >
+    <v-layout justify-center align-center>
+      <v-flex xs12 sm8 md6>
+        <v-card>
+          <CardHeader>
+            <template v-slot:title>
+              <v-icon
+                color="secondary"
+              >
+                fa-question-circle
+              </v-icon>
+
+              <span
+                class="ml-3"
+              >
+                User not found
+              </span>
+            </template>
+          </CardHeader>
+
+          <v-card-text
+            class="subtitle-1"
+          >
+            The user you requested was not found. This could be because they never existed, they've been deactivated,
+            they have their profile set to private, or it is an account reserved for system functions.
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+
 </template>
 
 <script>
@@ -178,6 +213,7 @@ export default {
 
   data: () =>({
     user: null,
+    loadingUser: true,
   }),
 
   created(){
@@ -255,6 +291,13 @@ export default {
 
       return this.user.folders.paginatorInfo.total
     },
+
+    firstInitial(){
+      if(!this.user)
+        return null
+
+      return this.user.username[0]
+    },
   },
 
   methods: {
@@ -267,6 +310,8 @@ export default {
     }),
 
     async getUser () {
+      this.loadingUser = true
+
       const query = gql`query($id: ID!){
         user(id: $id) {
           id
@@ -318,6 +363,8 @@ export default {
           variables
         }).then(({data}) => {
           this.user = data.user
+        }).finally(() => {
+          this.loadingUser = false
         })
     },
   },
