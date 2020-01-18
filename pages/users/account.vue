@@ -87,7 +87,7 @@
                 class="title"
                 v-show="!editingAccount"
               >
-                {{ user.profile.email }}
+                {{ user.profile && user.profile.email }}
               </span>
 
               <v-text-field
@@ -99,6 +99,28 @@
                 placeholder="Email..."
                 :height="20"
                 :rules="[v => !v || /.+@.+\..+/.test(v) || 'E-mail must be valid']"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col
+              :cols="2"
+            >
+              Bio
+            </v-col>
+            <v-col>
+              <div
+                class="title"
+                v-show="!editingAccount"
+                v-html="user.profile && user.profile.bio"
+              />
+
+              <editor
+                :content="user.profile.bio"
+                placeholder="bio..."
+                v-show="editingAccount"
+                @changed="v => editedBio = v"
               />
             </v-col>
           </v-row>
@@ -223,10 +245,12 @@ import siteThemesQuery from '~/graphql/siteTheme/siteThemes.gql'
 import authedUserQuery from '~/graphql/auth/me.gql'
 import updateUserMutation from "~/graphql/user/updateUserAccount.gql"
 import CardHeader from "~/components/CardHeader";
+import Editor from "~/components/Editor";
 
 export default {
   components:{
     CardHeader,
+    Editor,
   },
 
   data: () =>({
@@ -264,6 +288,7 @@ export default {
     editingAccount: false,
     editedUsername: '',
     editedEmail: '',
+    editedBio: '',
 
     accountFormValid: false,
   }),
@@ -317,6 +342,7 @@ export default {
 
       this.editedUsername = this.user.username
       this.editedEmail = this.user.profile.email
+      this.editedBio = this.user.profile.bio
     },
 
     cancelEditAccount(){
@@ -331,6 +357,7 @@ export default {
         id: this.user.id,
         username: this.editedUsername,
         email: this.editedEmail,
+        bio: this.editedBio,
       }
 
       return this.$apollo.mutate({mutation: updateUserMutation, variables})
