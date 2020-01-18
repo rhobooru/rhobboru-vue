@@ -1,3 +1,5 @@
+#import "~/graphql/user/authedUserFragment.gql"
+
 mutation($username: String!, $password: String!){
   login (
       input: {
@@ -10,18 +12,7 @@ mutation($username: String!, $password: String!){
       expires_in
       token_type
       user {
-        id
-        username
-        system_account
-        avatar_url
-        roles{
-          id
-          name
-        }
-        all_permissions{
-          id
-          name
-        }
+        ...AuthedUserFragment
       }
     }
 }

@@ -1,0 +1,20 @@
+#import "~/graphql/user/authedUserFragment.gql"
+
+mutation(
+  $id: ID!
+  $username: String!
+  $email: String
+){
+  updateUser(input:{
+    id: $id
+    username: $username
+    profile: {
+      update: {
+        user_id: $id
+        email: $email
+      }
+    }
+  }){
+    ...AuthedUserFragment
+  }
+}
