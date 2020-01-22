@@ -2,7 +2,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 export default function(){
 	return {
-    httpEndpoint: process.env.GRAPHQL_ENDPOINT,
+    httpEndpoint: process.env.graphqlEndpoint,
     httpLinkOptions: {
       mode: 'cors'
     },

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import imagePlaceholder from '~/assets/imagePlaceholder.js'
+import imagePlaceholder from '~/assets/js/imagePlaceholder.js'
 
 export default {
   name: 'Thumbnail',

@@ -32,6 +32,7 @@
             text
             @click="saveAccount"
             v-if="editingAccount"
+            :disabled="!accountFormValid"
           >
             <v-icon left>
               fa-save
@@ -41,61 +42,89 @@
         </template>
       </CardHeader>
       <v-card-text>
-        <v-row
-          class="input-row"
+        <v-form
+          v-model="accountFormValid"
         >
-          <v-col
-            :cols="2"
+          <v-row
+            class="input-row"
           >
-            Username
-          </v-col>
-          <v-col>
-            <span
-              class="title"
-              v-show="!editingAccount"
+            <v-col
+              :cols="2"
             >
-              {{ user.username }}
-            </span>
+              Username
+            </v-col>
+            <v-col>
+              <span
+                class="title"
+                v-show="!editingAccount"
+              >
+                {{ user.username }}
+              </span>
 
-            <v-text-field
-              v-model="editedUsername"
-              v-show="editingAccount"
-              single-line
-              dense
-              :counter="255"
-              placeholder="Username..."
-              :height="20"
-            />
-          </v-col>
-        </v-row>
+              <v-text-field
+                v-model="editedUsername"
+                v-show="editingAccount"
+                single-line
+                dense
+                :counter="255"
+                placeholder="Username..."
+                :height="20"
+                :rules="[v => !!v || 'Username is required']"
+              />
+            </v-col>
+          </v-row>
 
-        <v-row
-          class="input-row"
-        >
-          <v-col
-            :cols="2"
+          <v-row
+            class="input-row"
           >
-            Email
-          </v-col>
-          <v-col>
-            <span
-              class="title"
-              v-show="!editingAccount"
+            <v-col
+              :cols="2"
             >
-              {{ user.email }}
-            </span>
+              Email
+            </v-col>
+            <v-col>
+              <span
+                class="title"
+                v-show="!editingAccount"
+              >
+                {{ user.profile && user.profile.email }}
+              </span>
 
-            <v-text-field
-              v-model="editedEmail"
-              v-show="editingAccount"
-              single-line
-              dense
-              :counter="255"
-              placeholder="Email..."
-              :height="20"
-            />
-          </v-col>
-        </v-row>
+              <v-text-field
+                v-model="editedEmail"
+                v-show="editingAccount"
+                single-line
+                dense
+                :counter="255"
+                placeholder="Email..."
+                :height="20"
+                :rules="[v => !v || /.+@.+\..+/.test(v) || 'E-mail must be valid']"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col
+              :cols="2"
+            >
+              Bio
+            </v-col>
+            <v-col>
+              <div
+                class="title"
+                v-show="!editingAccount"
+                v-html="user.profile && user.profile.bio"
+              />
+
+              <editor
+                :content="user.profile.bio"
+                placeholder="bio..."
+                v-show="editingAccount"
+                @changed="v => editedBio = v"
+              />
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card-text>
     </v-card>
 
@@ -214,11 +243,14 @@ import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
 import recordFitsQuery from '~/graphql/recordFit/recordFits.gql'
 import siteThemesQuery from '~/graphql/siteTheme/siteThemes.gql'
 import authedUserQuery from '~/graphql/auth/me.gql'
+import updateUserMutation from "~/graphql/user/updateUserAccount.gql"
 import CardHeader from "~/components/CardHeader";
+import Editor from "~/components/Editor";
 
 export default {
   components:{
     CardHeader,
+    Editor,
   },
 
   data: () =>({
@@ -256,6 +288,9 @@ export default {
     editingAccount: false,
     editedUsername: '',
     editedEmail: '',
+    editedBio: '',
+
+    accountFormValid: false,
   }),
 
   created(){
@@ -306,6 +341,8 @@ export default {
       this.editingAccount = true
 
       this.editedUsername = this.user.username
+      this.editedEmail = this.user.profile.email
+      this.editedBio = this.user.profile.bio
     },
 
     cancelEditAccount(){
@@ -316,20 +353,16 @@ export default {
     async saveAccount(){
       this.editingAccount = false
 
-      const mutation = gql`mutation($id: ID!, $username: String){
-        updateUser(id: $id, username: $username){
-          id
-        }
-      }`
-
       const variables = {
         id: this.user.id,
         username: this.editedUsername,
+        email: this.editedEmail,
+        bio: this.editedBio,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      return this.$apollo.mutate({mutation: updateUserMutation, variables})
         .then(({ data }) => {
-          this.refreshUser()
+          this.updateUser({user: data.updateUser})
         })
     },
   },

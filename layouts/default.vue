@@ -92,8 +92,6 @@ export default {
 
   data() {
     return {
-      title: 'rhobooru',
-
       navItems: [
         {
           route: '/records',
@@ -186,6 +184,10 @@ export default {
   },
 
   computed:{
+    title(){
+      return process.env.appName
+    },
+
     activeNavItem(){
       return this.navItems.find(f => this.$route.fullPath.startsWith(this.$router.resolve(f.route).route.fullPath)) || {}
     },

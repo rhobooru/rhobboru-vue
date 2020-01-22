@@ -1,0 +1,23 @@
+fragment AuthedUserFragment on User {
+  id
+  username
+  system_account
+  avatar_url
+  roles{
+    id
+    name
+  }
+  all_permissions{
+    id
+    name
+  }
+  profile{
+    user_id
+    email
+    max_content_rating{
+      id
+      name
+    }
+    bio
+  }
+}

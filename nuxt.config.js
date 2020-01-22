@@ -1,7 +1,14 @@
 const isDev = process.env.NODE_ENV !== 'production'
 
+const env =  {
+  baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  appName: process.env.APP_NAME || 'rhobooru',
+  graphqlEndpoint: process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:8000/graphql'
+}
+
 export default {
   mode: 'spa',
+  env,
   router: {
     extendRoutes (routes, resolve) {
       // routes.push({
@@ -16,15 +23,15 @@ export default {
    ** Headers of the page
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - ' + env.appName,
+    title: env.appName || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: process.env.APP_DESCRIPTION || ''
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -38,7 +45,7 @@ export default {
    */
   css: [
     '@fortawesome/fontawesome-free/css/all.css',
-    '~/assets/global.css',
+    '~/assets/styles/global.css',
   ],
   /*
    ** Plugins to load before mounting the App
@@ -63,10 +70,10 @@ export default {
     'nuxt-client-init-module',
 
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    //'@nuxtjs/pwa',
+    //'@nuxtjs/axios',
+    //'@nuxtjs/pwa'
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv',
+    //'@nuxtjs/dotenv',
     '@nuxtjs/apollo',
   ],
   /*

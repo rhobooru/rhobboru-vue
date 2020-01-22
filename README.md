@@ -1,4 +1,4 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/rhobooru/rhovue) [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Frhobooru%2Frhovue%2Fbadge%3Fref%3Dmaster&style=flat)](https://actions-badge.atrox.dev/rhobooru/rhovue/goto?ref=master)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/rhobooru/rhovue) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rhobooru/rhovue/Test) [![codecov](https://codecov.io/gh/rhobooru/rhovue/branch/master/graph/badge.svg)](https://codecov.io/gh/rhobooru/rhovue)
 
 📕 [Documentation](https://github.com/rhobooru/rhovue/wiki)
 

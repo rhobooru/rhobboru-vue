@@ -1,4 +1,4 @@
-import ImageTools from '~/assets/ImageTools.js'
+import ImageTools from '~/assets/js/ImageTools.js'
 import CryptoJS from 'crypto-js'
 
 export default class ImageUtils {

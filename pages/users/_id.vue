@@ -49,9 +49,9 @@
       <v-card-text>
         <div
           v-if="bio"
-        >
-          {{ bio }}
-        </div>
+          v-html="bio"
+          class="ml-10"
+        />
 
         <div
           v-else
