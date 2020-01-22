@@ -216,6 +216,21 @@
       class="subtitle-1 mt-2 text-truncate"
       v-text="record.updated_by.username"
     ></kbd>
+
+
+    <br>
+    <br>
+
+
+    <v-btn
+      color="error"
+      block
+    >
+      <v-icon left>
+        fa-flag
+      </v-icon>
+      Report
+    </v-btn>
   </v-navigation-drawer>
 </template>
 

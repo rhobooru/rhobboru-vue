@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6>
       <v-card>
         <v-card-title>
-          Rhobooru
+          {{ title }}
         </v-card-title>
 
         <v-card-text>
@@ -25,6 +25,12 @@ import gql from 'graphql-tag'
 
 export default {
   components: {
+  },
+
+  computed:{
+    title(){
+      return process.env.appName
+    },
   },
 
   methods:{

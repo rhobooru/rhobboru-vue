@@ -65,6 +65,7 @@
         <SimilarRecords
           :records="similarRecords"
           :total="totalSimilarRecords"
+          v-show="filePicked"
         />
       </v-card-text>
 
@@ -226,6 +227,7 @@ export default {
       this.showPreview = false
       this.fileUploaded = false
       this.imageUrl = false
+      this.similarRecords = null
     },
 
     pickedFile(){

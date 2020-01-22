@@ -21,6 +21,7 @@
     "byte-size": "^6.2.0",
     "crypto-js": "^3.1.9-1",
     "exif-js": "^2.3.0",
+    "fs": "0.0.1-security",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.15",
     "nuxt": "^2.0.0",
