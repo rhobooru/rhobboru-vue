@@ -1,4 +1,4 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/rhobooru/rhovue) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rhobooru/rhovue/Test)[![codecov](https://codecov.io/gh/rhobooru/rhovue/branch/master/graph/badge.svg)](https://codecov.io/gh/rhobooru/rhovue)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/rhobooru/rhovue) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rhobooru/rhovue/Test) [![codecov](https://codecov.io/gh/rhobooru/rhovue/branch/master/graph/badge.svg)](https://codecov.io/gh/rhobooru/rhovue)
 
 📕 [Documentation](https://github.com/rhobooru/rhovue/wiki)
 
