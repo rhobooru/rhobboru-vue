@@ -3,6 +3,8 @@ fragment AuthedUserFragment on User {
   username
   system_account
   avatar_url
+  email
+  bio
   roles{
     id
     name
@@ -10,14 +12,5 @@ fragment AuthedUserFragment on User {
   all_permissions{
     id
     name
-  }
-  profile{
-    user_id
-    email
-    max_content_rating{
-      id
-      name
-    }
-    bio
   }
 }

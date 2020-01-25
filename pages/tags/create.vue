@@ -170,9 +170,15 @@ export default {
         summary: this.summary,
       }
 
-      return this.$apollo.mutate({mutation, variables})
-      .catch(({ error }) => {
-        this.errorSnackbar = true
+      return new Promise((resolve, reject) => {
+        this.$apollo.mutate({mutation, variables})
+        .then((result) => {
+          resolve(result)
+        })
+        .catch((result) => {
+          this.errorSnackbar = true
+          reject(result)
+        })
       })
     },
 

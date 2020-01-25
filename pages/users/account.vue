@@ -87,7 +87,7 @@
                 class="title"
                 v-show="!editingAccount"
               >
-                {{ user.profile && user.profile.email }}
+                {{ user && user.email }}
               </span>
 
               <v-text-field
@@ -113,11 +113,11 @@
               <div
                 class="title"
                 v-show="!editingAccount"
-                v-html="user.profile && user.profile.bio"
+                v-html="user && user.bio"
               />
 
               <editor
-                :content="user.profile.bio"
+                :content="user.bio"
                 placeholder="bio..."
                 v-show="editingAccount"
                 @changed="v => editedBio = v"
@@ -150,7 +150,7 @@
 
         <v-select
           v-model="selectedRecordFit"
-          :items="recordFits"
+          :items="settings.recordViewing.fetchingStrategy.options"
           label="Record Fitting Strategy"
           item-id="id"
           item-text="name"
@@ -159,16 +159,12 @@
           :hint="selectedRecordFit ? selectedRecordFit.description : ''"
         ></v-select>
 
-        <v-select
-          v-model="selectedSiteTheme"
-          :items="siteThemes"
-          label="Site Theme"
-          item-id="id"
-          item-text="name"
-          persistent-hint
-          return-object
-          :hint="selectedSiteTheme ? selectedSiteTheme.description : ''"
-        ></v-select>
+        <v-switch 
+          v-model="useDarkTheme"
+          label="Use Dark Theme"
+          inset
+          color="secondary"
+        />
 
       </v-card-text> 
 
@@ -241,7 +237,6 @@
 import gql from 'graphql-tag'
 import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
 import recordFitsQuery from '~/graphql/recordFit/recordFits.gql'
-import siteThemesQuery from '~/graphql/siteTheme/siteThemes.gql'
 import authedUserQuery from '~/graphql/auth/me.gql'
 import updateUserMutation from "~/graphql/user/updateUserAccount.gql"
 import CardHeader from "~/components/CardHeader";
@@ -282,8 +277,7 @@ export default {
     recordFits: null,
     selectedRecordFit: null,
 
-    siteThemes: null,
-    selectedSiteTheme: null,
+    useDarkTheme: true,
 
     editingAccount: false,
     editedUsername: '',
@@ -295,7 +289,8 @@ export default {
 
   created(){
     this.getRecordFits()
-    this.getSiteThemes()
+
+    this.useDarkTheme = true //this.user.settings.dark_theme
   },
 
   computed:{
@@ -315,8 +310,8 @@ export default {
       refreshUser: 'auth/refreshUser',
     }),
 
-    async getRecordFits () {
-      return this.$apollo.query({
+    getRecordFits () {
+      this.$apollo.query({
           query: recordFitsQuery
         }).then(({data}) => {
           this.recordFits = data.recordFits
@@ -326,23 +321,12 @@ export default {
         })
     },
 
-    async getSiteThemes () {
-      return this.$apollo.query({
-          query: siteThemesQuery
-        }).then(({data}) => {
-          this.siteThemes = data.siteThemes
-
-          if(!this.selectedSiteTheme)
-            this.selectedSiteTheme = this.siteThemes.find(f => f.is_default)
-        })
-    },
-
     editAccount(){
       this.editingAccount = true
 
       this.editedUsername = this.user.username
-      this.editedEmail = this.user.profile.email
-      this.editedBio = this.user.profile.bio
+      this.editedEmail = this.user.email
+      this.editedBio = this.user.bio
     },
 
     cancelEditAccount(){
@@ -360,13 +344,19 @@ export default {
         bio: this.editedBio,
       }
 
-      return this.$apollo.mutate({mutation: updateUserMutation, variables})
-        .then(({ data }) => {
-          this.updateUser({user: data.updateUser})
-        })
+      return new Promise((resolve, reject) => {
+        this.$apollo.mutate({mutation: updateUserMutation, variables})
+          .then((result) => {
+            this.updateUser({user: result.data.updateUser})
+
+            resolve(result)
+          })
+          .catch(() => {
+            reject()
+          })
+      })
     },
   },
-  
 }
 </script>
 

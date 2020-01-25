@@ -323,7 +323,7 @@ export default {
         content_rating_id: this.editableRecord.content_rating.id,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      await this.$apollo.mutate({mutation, variables})
     },
 
     async syncRecordTags(){
@@ -338,7 +338,7 @@ export default {
         tag_ids: this.editableRecord.tags.map(f => f.id),
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      await this.$apollo.mutate({mutation, variables})
     },
 
     filterTags(item, queryText, itemText){

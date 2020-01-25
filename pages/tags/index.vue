@@ -156,7 +156,7 @@ export default {
         orderDir: sortDesc.length ? (sortDesc[0] ? 'DESC' : 'ASC') : 'ASC',
       }
 
-      return this.$apollo.query({query, variables, fetchPolicy: 'network-only'})
+      this.$apollo.query({query, variables, fetchPolicy: 'network-only'})
         .then(({ data }) => {
           this.tags = data.tags.data
 

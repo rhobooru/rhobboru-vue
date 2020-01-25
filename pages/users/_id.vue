@@ -199,9 +199,6 @@
 <script>
 import gql from 'graphql-tag'
 import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
-import recordFitsQuery from '~/graphql/recordFit/recordFits.gql'
-import siteThemesQuery from '~/graphql/siteTheme/siteThemes.gql'
-import authedUserQuery from '~/graphql/auth/me.gql'
 import CardHeader from "~/components/CardHeader";
 import ThumbnailSlider from '~/components/Record/ThumbnailSlider.vue'
 
@@ -233,7 +230,7 @@ export default {
       if(!this.user)
         return null
 
-      return this.user.profile.bio
+      return this.user.bio
     },
 
     uploadedRecords(){
@@ -319,13 +316,11 @@ export default {
           system_account
           avatar_url
           created_at
+          email
+          bio
           roles{
             id
             name
-          }
-          profile{
-            email
-            bio
           }
           records(page: 1, first: 10){
             data{
@@ -358,7 +353,7 @@ export default {
         id: this.userId
       }
 
-      return this.$apollo.query({
+      this.$apollo.query({
           query,
           variables
         }).then(({data}) => {

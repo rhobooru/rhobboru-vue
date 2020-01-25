@@ -108,7 +108,7 @@ export default {
       else
         variables.md5 = this.$route.params.id
 
-      return this.$apollo.query({query, variables, fetchPolicy: forceUpdate ? 'network-only' : null})
+      this.$apollo.query({query, variables, fetchPolicy: forceUpdate ? 'network-only' : null})
         .then(({ data }) => {
           this.record = data.record
         })

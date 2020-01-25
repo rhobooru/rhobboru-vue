@@ -417,7 +417,7 @@ export default {
         summary: this.editedSummary,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({mutation, variables})
         .then(({ data }) => {
           this.tag.name = data.updateTag.name
           this.tag.summary = data.updateTag.summary
@@ -455,7 +455,7 @@ export default {
         description: this.editedDescription,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({mutation, variables})
         .then(({ data }) => {
           this.tag.description = data.updateTag.description
           this.editingDescription = false

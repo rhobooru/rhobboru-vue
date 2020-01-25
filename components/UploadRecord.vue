@@ -281,28 +281,39 @@ export default {
         })
     },
 
-    createRecordAndStay(){
+    async createRecordAndStay(){
       this.doRecordUpload()
-        .then(() => {
-
-        })
     },
 
-    createRecordAndView(){
+    async createRecordAndView(){
       this.doRecordUpload()
         .then(() => {
-          this.$router.push({ name: 'records-id', params: { id: this.record.id } })  
+          this.$router.push({ 
+            name: 'records-id', 
+            params: { id: this.record.id } 
+          })
         })
     },
 
     async doRecordUpload(){
-      return this.createRecord()
-      .then(() => {
-        this.uploadFile()
+      return new Promise((resolve, reject) => {
+        this.createRecord()
+          .then(() => {
+            this.uploadFile()
+              .then(() => {
+                resolve()
+              })
+              .catch(() => {
+                reject()
+              })
+          })
+          .catch(() => {
+            reject()
+          })
       })
     },
 
-    async createRecord(){
+    createRecord(){
       this.uploading = true
       this.$emit('creating')
 
@@ -333,22 +344,29 @@ export default {
         content_rating_id: this.contentRating.id,
       }
 
-      return this.$apollo.mutate({mutation, variables})
-        .then(({ data }) => {
+      return new Promise((resolve, reject) => {
+        this.$apollo.mutate({mutation, variables})
+        .then((result) => {
           this.$emit('created')
 
-          this.record = data.createRecord
+          this.record = result.data.createRecord
+
+          resolve(result)
         }).catch((error) => {
           this.$emit('error')
+          console.error(error)
 
           this.hasError = true
           this.uploading = false
 
           this.error = 'Failed to create record'
+
+          reject(error)
         })
+      })
     },
 
-    async uploadFile(){
+    uploadFile(){
       this.$emit('uploading')
 
       const mutation = gql`mutation(
@@ -365,21 +383,28 @@ export default {
         file: this.file,
       }
 
-      return this.$apollo.mutate({mutation, variables})
-        .then(({ data }) => {
-          this.fileUploaded = true
+      return new Promise((resolve, reject) => {
+        this.$apollo.mutate({mutation, variables})
+          .then((result) => {
+            this.fileUploaded = true
 
-          this.uploading = false
+            this.uploading = false
 
-          this.$emit('uploaded')
-        }).catch((error) => {
-          this.$emit('error')
+            this.$emit('uploaded')
 
-          this.hasError = true
-          this.uploading = false
+            resolve(result);
+          }).catch((error) => {
+            this.$emit('error')
+            console.error(error)
 
-          this.error = 'Failed to upload file'
-        })
+            this.hasError = true
+            this.uploading = false
+
+            this.error = 'Failed to upload file'
+
+            reject(error);
+          })
+      })
     },
 
     async getSimilarRecords(){
@@ -403,7 +428,7 @@ export default {
         phash: '' + this.phash,
       }
 
-      return this.$apollo.query({query, variables})
+      this.$apollo.query({query, variables})
         .then(({ data }) => {
           this.similarRecords = data.similarRecords.data
           this.totalSimilarRecords = data.similarRecords.paginatorInfo.total

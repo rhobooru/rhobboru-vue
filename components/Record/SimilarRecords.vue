@@ -75,7 +75,7 @@ export default {
   },
 
   methods: {
-    async getSimilarRecords(){
+    getSimilarRecords(){
       const query = gql`query($id: ID!){
         similarRecords(id: $id){
           data{
@@ -93,7 +93,7 @@ export default {
         id: this.similarToRecord.id
       }
 
-      return this.$apollo.query({query, variables})
+      this.$apollo.query({query, variables})
         .then(({ data }) => {
           this.similarRecords = data.similarRecords.data
           this.totalSimilar = data.similarRecords.paginatorInfo.total
