@@ -8,9 +8,9 @@
     label="Content Rating"
     persistent-hint
     return-object
-    @change="selectionChanged"
     required
     :rules="[v => !!v || 'Content rating is required']"
+    @change="selectionChanged"
   />
 </template>
 
@@ -20,58 +20,59 @@ import gql from 'graphql-tag'
 export default {
   name: 'SelectContentRating',
 
-  props: [
-    'contentRating',
-  ],
+  props: ['contentRating'],
 
-  data: function() {
+  data () {
     return {
       myContentRating: null,
       contentRatings: null,
     }
   },
-  
-  created: function () {
-    this.getContentRatings()
-
-    this.myContentRating = this.contentRating
-  },
-
-  watch:{
-    myContentRating(){
-      this.selectionChanged()
-    },
-  },
 
   computed: {
-    description(){
-      if(!this.myContentRating)
-        return ''
+    description () {
+      if (!this.myContentRating) { return '' }
 
       return this.myContentRating.description
     },
   },
 
-  methods:{
-    selectionChanged(){
+  watch: {
+    myContentRating () {
+      this.selectionChanged()
+    },
+  },
+
+  created () {
+    this.getContentRatings()
+
+    this.myContentRating = this.contentRating
+  },
+
+  methods: {
+    selectionChanged () {
       this.$emit('change', this.myContentRating)
     },
 
-    getContentRatings(){
-      const query = gql`query{
-        contentRatings {
-          id
-          name
-          short_name
-          description
+    getContentRatings () {
+      const query = gql`
+        query {
+          contentRatings {
+            id
+            name
+            short_name
+            description
+          }
         }
-      }`
+      `
 
-      this.$apollo.query({query})
+      this.$apollo
+        .query({ query })
         .then(({ data }) => {
           this.contentRatings = data.contentRatings
-        }).catch((error) => {
-          this.$emit('error')
+        })
+        .catch((error) => {
+          this.$emit('error', error)
         })
     },
   },

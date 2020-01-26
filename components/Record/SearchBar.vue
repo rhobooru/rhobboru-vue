@@ -25,40 +25,39 @@ import gql from 'graphql-tag'
 
 export default {
   name: 'SearchBar',
-  
+
   props: [
     'initialQuery',
   ],
 
-  data: () =>({
+  data: () => ({
     query: {},
     foundTags: [],
     isLoading: false,
     tagSearch: null,
   }),
 
-  created(){
-    this.query = JSON.parse(JSON.stringify(this.initialQuery))
+  computed: {
+    realQuery () {
+      if (!this.query) { return '' }
+
+      // return this.query.split(' ').map((item) => { return '[' + item.replace('_', ' ') + ']' }).join(' ')
+      return this.query.map((term) => { return '[' + term.name + ']' }).join(' ')
+    }
   },
 
-  watch:{
+  watch: {
     tagSearch (val) {
       val && this.searchTags(val)
     },
   },
 
-  computed: {
-    realQuery(){
-      if(!this.query)
-        return ''
-
-      //return this.query.split(' ').map((item) => { return '[' + item.replace('_', ' ') + ']' }).join(' ')
-      return this.query.map((term) => { return '[' + term.name + ']'}).join(' ')
-    }
+  created () {
+    this.query = JSON.parse(JSON.stringify(this.initialQuery))
   },
 
-  methods:{
-    searchTags(v) {
+  methods: {
+    searchTags (v) {
       this.isLoading = true
 
       const query = gql`query($name: Mixed){
@@ -78,7 +77,7 @@ export default {
         name: v + '%',
       }
 
-      this.$apollo.query({query, variables})
+      this.$apollo.query({ query, variables })
         .then(({ data }) => {
           this.foundTags = data.tags.data
 
@@ -86,12 +85,12 @@ export default {
         })
     },
 
-    filterTags(item, queryText, itemText){
-      return itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 &&
+    filterTags (item, queryText, itemText) {
+      return itemText.toLocaleLowerCase().includes(queryText.toLocaleLowerCase()) &&
         !(this.query && this.query.find(f => f.name === itemText))
     },
 
-    changed(){
+    changed () {
       this.$emit('change', this.realQuery)
     }
   },

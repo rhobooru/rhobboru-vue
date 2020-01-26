@@ -1,5 +1,5 @@
 <template>
-  <v-card 
+  <v-card
     class="file-upload-container mb-5"
     :loading="uploading"
   >
@@ -8,48 +8,51 @@
       v-model="valid"
     >
       <v-card-title>
-        <v-file-input 
-            accept="image/*" 
-            label="Select media"
-            v-model="file"
-            @change="pickedFile"
-            show-size
-            prepend-icon="fa-folder-open"
-            v-show="!fileUploaded"
-            :loading="filePreProcessing"
-            :success="fileUploaded"
-            :error="hasError"
-            :error-messages="error"
-            single-line
-            dense
-            :rules="imageRules"
-            :truncate-length="99999"
-        ></v-file-input>
+        <v-file-input
+          v-show="!fileUploaded"
+          v-model="file"
+          accept="image/*"
+          label="Select media"
+          show-size
+          prepend-icon="fa-folder-open"
+          :loading="filePreProcessing"
+          :success="fileUploaded"
+          :error="hasError"
+          :error-messages="error"
+          single-line
+          dense
+          :rules="imageRules"
+          :truncate-length="99999"
+          @change="pickedFile"
+        />
         <span
           v-if="fileUploaded"
         >
-          {{ this.record.md5 }}
+          {{ record.md5 }}
         </span>
       </v-card-title>
 
       <v-card-text>
         <v-row>
-          <v-col 
+          <v-col
             :cols="previewCols"
             class="preview-col"
           >
-            <v-img 
-              :src="imagePreview" 
+            <v-img
               v-show="showPreview"
+              :src="imagePreview"
               :class="{ expanded: bigPreview, 'preview-image': true }"
               contain
               @click.stop="bigPreview = !bigPreview"
-            ></v-img>
+            />
           </v-col>
-          <v-col cols="6" v-show="hasData">
+          <v-col
+            v-show="hasData"
+            cols="6"
+          >
             <v-row>
               <v-col>
-                <SelectContentRating
+                <select-content-rating
                   @change="contentRatingSelected"
                 />
               </v-col>
@@ -62,59 +65,59 @@
           </v-col>
         </v-row>
 
-        <SimilarRecords
+        <similar-records
+          v-show="filePicked"
           :records="similarRecords"
           :total="totalSimilarRecords"
-          v-show="filePicked"
         />
       </v-card-text>
 
       <v-card-actions>
-        <v-btn 
-          @click.prevent="clearForm"
+        <v-btn
           v-show="!fileUploaded && hasData"
           text
+          @click.prevent="clearForm"
         >
           <v-icon left>
             fa-times
           </v-icon>
-          
+
           Clear
         </v-btn>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
-        <v-btn 
-          color="primary" 
-          @click.prevent="createRecordAndStay"
+        <v-btn
           v-show="!fileUploaded && hasData"
+          color="primary"
           :disabled="!valid"
+          @click.prevent="createRecordAndStay"
         >
           <v-icon left>
             fa-upload
           </v-icon>
-          
+
           Upload and Stay
         </v-btn>
 
-        <v-btn 
-          color="primary" 
-          @click.prevent="createRecordAndView"
+        <v-btn
           v-show="!fileUploaded && hasData"
+          color="primary"
           :disabled="!valid"
+          @click.prevent="createRecordAndView"
         >
           <v-icon left>
             fa-external-link-alt
           </v-icon>
-          
+
           Upload and View
         </v-btn>
 
-        <v-btn 
-          color="primary" 
-          nuxt 
-          :to="uploadedUrl"
+        <v-btn
           v-show="fileUploaded"
+          color="primary"
+          nuxt
+          :to="uploadedUrl"
         >
           <v-icon left>
             fa-location-arrow
@@ -127,17 +130,16 @@
   </v-card>
 </template>
 
-
 <script>
 import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
+import byteSize from 'byte-size'
 import SelectContentRating from '~/components/Content Rating/SelectContentRating.vue'
 import SimilarRecords from '~/components/Record/SimilarRecords'
 import ImageUtils from '~/assets/js/ImageUtils.js'
-import byteSize from 'byte-size'
 
 export default {
-  name: "UploadRecord",
+  name: 'UploadRecord',
 
   components: {
     SelectContentRating,
@@ -156,7 +158,7 @@ export default {
 
     record: null,
     contentRating: null,
-    showPreview:false,
+    showPreview: false,
     similarRecords: null,
     totalSimilarRecords: 0,
 
@@ -169,49 +171,39 @@ export default {
 
     imageUtils: null,
   }),
-  
-  created(){
-    this.imageUtils = new ImageUtils()
-  },
-
-  beforeDestroy(){
-    if(this.imageUtils)
-      this.imageUtils = null
-  },
 
   computed: {
     ...mapGetters({
       get: 'config/get',
     }),
 
-    hasData(){
+    hasData () {
       return this.filePicked || this.contentRating
     },
 
-    previewCols(){
+    previewCols () {
       return this.bigPreview ? 12 : 6
     },
 
-    filePicked(){
+    filePicked () {
       return !!this.file
     },
 
-    uploadedUrl(){
-      if(!this.record)
-        return ''
+    uploadedUrl () {
+      if (!this.record) { return '' }
 
       return '/records/' + this.record.id
     },
 
-    maxImageSize(){
+    maxImageSize () {
       return this.get('media.images.max_file_size')
     },
 
-    maxFileSizeReadable(){
+    maxFileSizeReadable () {
       return byteSize(this.maxImageSize, { units: 'iec' })
     },
 
-    imageRules(){
+    imageRules () {
       return [
         v => !!v || 'File is required',
         v => !v || v.size < this.maxImageSize || 'Images must be ' + this.maxFileSizeReadable + ' or smaller',
@@ -219,8 +211,16 @@ export default {
     },
   },
 
-  methods:{
-    clearFileData(){
+  created () {
+    this.imageUtils = new ImageUtils()
+  },
+
+  beforeDestroy () {
+    if (this.imageUtils) { this.imageUtils = null }
+  },
+
+  methods: {
+    clearFileData () {
       this.imagePreview = ''
       this.md5 = null
       this.phash = null
@@ -230,30 +230,30 @@ export default {
       this.similarRecords = null
     },
 
-    pickedFile(){
+    pickedFile () {
       this.clearFileData()
 
-      if(this.file){
+      if (this.file) {
         this.$emit('file-picked')
 
-        //if (/\.(jpe?g|png|gif)$/i.test(this.file.name) ) {
-          this.filePreProcessing = true
+        // if (/\.(jpe?g|png|gif)$/i.test(this.file.name) ) {
+        this.filePreProcessing = true
 
-          const mime = this.file.type
+        // const mime = this.file.type
 
-          this.setPreview()
+        this.setPreview()
 
-          this.filePreProcessing = false
+        this.filePreProcessing = false
 
-          URL.revokeObjectURL(this.imageUrl)
-        //}
+        URL.revokeObjectURL(this.imageUrl)
+        // }
       }
     },
 
-    setPreview(){
-      let reader  = new FileReader()
+    setPreview () {
+      const reader = new FileReader()
 
-      reader.addEventListener("load", function () {
+      reader.addEventListener('load', function () {
         this.imageUrl = reader.result
 
         this.imagePreview = this.imageUrl
@@ -261,18 +261,19 @@ export default {
         this.showPreview = true
 
         this.calculateHash()
-
       }.bind(this), false)
-          
+
       reader.readAsDataURL(this.file)
     },
 
-    calculateHash() {
+    calculateHash () {
       this.imageUtils.getMD5(this.file)
-        .then(
-          res => this.md5 = res,
-          err => console.error(err)
-        )
+        .then((result) => {
+          this.md5 = result
+        })
+        .catch((error) => {
+          console.error(error)
+        })
 
       this.imageUtils.getPHash(this.file)
         .then((phash) => {
@@ -281,39 +282,39 @@ export default {
         })
     },
 
-    async createRecordAndStay(){
+    createRecordAndStay () {
       this.doRecordUpload()
     },
 
-    async createRecordAndView(){
+    createRecordAndView () {
       this.doRecordUpload()
         .then(() => {
-          this.$router.push({ 
-            name: 'records-id', 
-            params: { id: this.record.id } 
+          this.$router.push({
+            name: 'records-id',
+            params: { id: this.record.id }
           })
         })
     },
 
-    async doRecordUpload(){
+    doRecordUpload () {
       return new Promise((resolve, reject) => {
         this.createRecord()
           .then(() => {
             this.uploadFile()
-              .then(() => {
-                resolve()
+              .then((result) => {
+                resolve(result)
               })
-              .catch(() => {
-                reject()
+              .catch((error) => {
+                reject(error)
               })
           })
-          .catch(() => {
-            reject()
+          .catch((error) => {
+            reject(error)
           })
       })
     },
 
-    createRecord(){
+    createRecord () {
       this.uploading = true
       this.$emit('creating')
 
@@ -345,28 +346,28 @@ export default {
       }
 
       return new Promise((resolve, reject) => {
-        this.$apollo.mutate({mutation, variables})
-        .then((result) => {
-          this.$emit('created')
+        this.$apollo.mutate({ mutation, variables })
+          .then((result) => {
+            this.$emit('created')
 
-          this.record = result.data.createRecord
+            this.record = result.data.createRecord
 
-          resolve(result)
-        }).catch((error) => {
-          this.$emit('error')
-          console.error(error)
+            resolve(result)
+          }).catch((error) => {
+            this.$emit('error')
+            console.error(error)
 
-          this.hasError = true
-          this.uploading = false
+            this.hasError = true
+            this.uploading = false
 
-          this.error = 'Failed to create record'
+            this.error = 'Failed to create record'
 
-          reject(error)
-        })
+            reject(error)
+          })
       })
     },
 
-    uploadFile(){
+    uploadFile () {
       this.$emit('uploading')
 
       const mutation = gql`mutation(
@@ -384,7 +385,7 @@ export default {
       }
 
       return new Promise((resolve, reject) => {
-        this.$apollo.mutate({mutation, variables})
+        this.$apollo.mutate({ mutation, variables })
           .then((result) => {
             this.fileUploaded = true
 
@@ -392,7 +393,7 @@ export default {
 
             this.$emit('uploaded')
 
-            resolve(result);
+            resolve(result)
           }).catch((error) => {
             this.$emit('error')
             console.error(error)
@@ -402,12 +403,12 @@ export default {
 
             this.error = 'Failed to upload file'
 
-            reject(error);
+            reject(error)
           })
       })
     },
 
-    async getSimilarRecords(){
+    getSimilarRecords () {
       const query = gql`query(
           $phash: String!
         ){
@@ -428,16 +429,16 @@ export default {
         phash: '' + this.phash,
       }
 
-      this.$apollo.query({query, variables})
+      this.$apollo.query({ query, variables })
         .then(({ data }) => {
           this.similarRecords = data.similarRecords.data
           this.totalSimilarRecords = data.similarRecords.paginatorInfo.total
         }).catch((error) => {
-          
+          console.error(error)
         })
     },
 
-    contentRatingSelected(contentRating){
+    contentRatingSelected (contentRating) {
       this.contentRating = contentRating
     },
 
@@ -448,7 +449,6 @@ export default {
   },
 }
 </script>
-
 
 <style scoped>
 .preview-image{

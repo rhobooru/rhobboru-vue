@@ -1,5 +1,5 @@
 <template>
-  <v-avatar 
+  <v-avatar
     :color="avatarUrl ? '' : 'secondary'"
     class="user-menu-button"
     @click.prevent="toggleUserDrawer"
@@ -9,15 +9,15 @@
       mode="out-in"
     >
       <img
-        :src="avatarUrl"
-        alt="user avatar"
         v-if="avatarUrl"
         key="avatar"
+        :src="avatarUrl"
+        alt="user avatar"
       >
-      <span 
-        class="white--text display-1"
+      <span
         v-else-if="isAuthenticated"
         key="initial"
+        class="white--text display-1"
       >
         {{ firstInitial }}
       </span>
@@ -37,25 +37,24 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'NavAvatar',
 
-  computed:{
+  computed: {
     ...mapGetters({
       user: 'auth/user',
       avatarUrl: 'auth/avatarUrl'
     }),
 
-    isAuthenticated(){
+    isAuthenticated () {
       return this.$store.state.auth.isAuthenticated
     },
 
-    firstInitial(){
-      if(!this.$store.state.auth.isAuthenticated)
-        return null
+    firstInitial () {
+      if (!this.$store.state.auth.isAuthenticated) { return null }
 
       return this.user.username[0]
     },
   },
 
-  methods:{
+  methods: {
     ...mapMutations({
       toggleUserDrawer: 'drawer/toggleUserDrawer',
     }),

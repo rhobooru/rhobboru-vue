@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'RecordMedia.vue',
+  name: 'RecordMediaVue',
 
   props: [
     'showPreview',
@@ -21,40 +21,35 @@ export default {
     'preloadFullRes',
   ],
 
-  data:() => ({
+  data: () => ({
   }),
 
-  watch:{
-    preloadFullRes(val, oldVal){
-      if(oldVal === false && val === true)
-        this.preloadImage()
-    },
-  },
+  computed: {
+    imageUrl () {
+      if (this.record == null) { return '' }
 
-  computed:{
-    imageUrl(){
-      if(this.record == null)
-        return ''
-
-      if(this.showPreview)
-        return this.record.preview || this.record.image
+      if (this.showPreview) { return this.record.preview || this.record.image }
 
       return this.record.image
     },
 
-    lazyUrl(){
-      if(this.record == null)
-        return ''
+    lazyUrl () {
+      if (this.record == null) { return '' }
 
-      if(this.showPreview)
-        return this.record.thumbnail || this.record.preview
+      if (this.showPreview) { return this.record.thumbnail || this.record.preview }
 
       return this.record.preview
     },
   },
 
-  methods:{
-    preloadImage(){
+  watch: {
+    preloadFullRes (val, oldVal) {
+      if (oldVal === false && val === true) { this.preloadImage() }
+    },
+  },
+
+  methods: {
+    preloadImage () {
       const image = new Image()
       image.src = this.record.image
     },

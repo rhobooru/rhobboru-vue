@@ -34,5 +34,5 @@ export const mutations = {
 }
 
 export const getters = {
-  
+
 }

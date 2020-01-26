@@ -1,17 +1,15 @@
 <template>
   <v-container>
-
     <v-slide-y-reverse-transition group>
       <template
         v-for="slot in uploadSlots"
       >
-        <UploadRecord 
+        <upload-record
           :key="slot.index"
-          v-on:file-picked="addAnotherUpload(slot.index)"
+          @file-picked="addAnotherUpload(slot.index)"
         />
       </template>
     </v-slide-y-reverse-transition>
-
   </v-container>
 </template>
 
@@ -19,41 +17,42 @@
 import UploadRecord from '~/components/UploadRecord.vue'
 
 export default {
-  components:{
+  components: {
     UploadRecord,
   },
 
-  data: function() {
+  data () {
     return {
       uploadSlots: [
         {
           index: 0,
           dirty: false,
-        }
+        },
       ],
     }
   },
-  
-  created: function () {
-    
-  },
 
   computed: {
-    cleanSlots(){
-      return this.uploadSlots.find(f => !f.dirty) ? true : false
+    cleanSlots () {
+      return !!this.uploadSlots.find(f => !f.dirty)
     },
   },
 
-  methods:{
+  created () {
 
-    addAnotherUpload(slot){
+  },
+
+  methods: {
+
+    addAnotherUpload (slot) {
       this.uploadSlots[slot].dirty = true
 
-      if(!this.cleanSlots)
+      if (!this.cleanSlots) {
         this.uploadSlots.push({
           index: this.uploadSlots.length,
           dirty: false,
         })
+      }
     },
   },
 }

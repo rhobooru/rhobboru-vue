@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="thumbnail"
     :style="{ width: thumbnailSize + 'px', height: thumbnailSize + 'px' }"
   >
@@ -11,10 +11,9 @@
         :max-height="thumbnailSize"
         contain
         position="center center"
-        @load="thumbnailLoaded"
         eager
-      >
-      </v-img>
+        @load="thumbnailLoaded"
+      />
     </nuxt-link>
   </div>
 </template>
@@ -30,38 +29,36 @@ export default {
     'record',
   ],
 
-  data: function() {
+  data () {
     return {
       imagePlaceholder: imagePlaceholder.src,
       thumbnailSize: 200,
-      aspectRatio: 0,
     }
-  },
-  
-  created: function () {
-    this.thumbnailSize = this.size || this.thumbnailSize
   },
 
   computed: {
-    thumbnail(){
+    thumbnail () {
       return this.record.thumbnail
     },
 
-    url(){
+    url () {
       return '/records/' + this.record.id
     },
 
-    imageDimensions(){
-      this.aspectRatio = this.record.width / this.record.height
+    aspectRatio () {
+      return this.record.width / this.record.height
+    },
+
+    imageDimensions () {
       let targetWidth
-      let targetHeight 
-      
-      targetWidth = targetHeight = Math.min(this.thumbnailSize, Math.max(this.record.width, this.record.height));
+      let targetHeight
+
+      targetWidth = targetHeight = Math.min(this.thumbnailSize, Math.max(this.record.width, this.record.height))
 
       if (this.aspectRatio < 1) {
-          targetWidth = targetHeight * this.aspectRatio;
+        targetWidth = targetHeight * this.aspectRatio
       } else {
-          targetHeight = targetWidth / this.aspectRatio;
+        targetHeight = targetWidth / this.aspectRatio
       }
 
       return {
@@ -71,8 +68,12 @@ export default {
     },
   },
 
-  methods:{
-    thumbnailLoaded(){
+  created () {
+    this.thumbnailSize = this.size || this.thumbnailSize
+  },
+
+  methods: {
+    thumbnailLoaded () {
       this.$emit('loaded')
     },
   },

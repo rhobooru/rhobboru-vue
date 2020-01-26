@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
-    class="user-sidebar"
     v-model="$store.state.drawer.userDrawerOpen"
+    class="user-sidebar"
     app
     right
     :stateless="true"
@@ -27,22 +27,22 @@
             name="slide-x-reverse-transition"
             mode="out-in"
           >
-            <user-menu 
+            <user-menu
               v-if="isAuthenticated"
-              @logged-out="isLoggingIn = true"
               key="authed"
+              @logged-out="isLoggingIn = true"
             />
-            <login 
+            <login
               v-else-if="isLoggingIn"
+              key="login"
               @register="isRegistering = true; isLoggingIn = false"
               @logged-in="isLoggingIn = false"
-              key="login"
             />
-            <register 
+            <register
               v-else-if="isRegistering"
+              key="register"
               @login="isRegistering = false; isLoggingIn = true"
               @registered="isRegistering = false"
-              key="register"
             />
           </transition>
         </v-expansion-panel-content>
@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import QuickList from '~/components/QuickList'
 import UserMenu from '~/components/User/UserMenu'
 import Login from '~/components/Auth/Login'
@@ -89,8 +88,8 @@ export default {
     Register,
   },
 
-  props:[
-    
+  props: [
+
   ],
 
   data: () => ({
@@ -98,20 +97,20 @@ export default {
     isRegistering: false,
   }),
 
-  created(){
-    this.isLoggingIn = !this.isAuthenticated
-  },
-
   computed: {
-    isAuthenticated(){
+    isAuthenticated () {
       return this.$store.state.auth.isAuthenticated
     },
 
-    username(){
+    username () {
       return this.$store.state.auth.isAuthenticated
         ? this.$store.state.auth.user.username
         : 'Anonymous'
     },
+  },
+
+  created () {
+    this.isLoggingIn = !this.isAuthenticated
   },
 
   methods: {

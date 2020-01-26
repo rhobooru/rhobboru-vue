@@ -12,25 +12,24 @@ export const mutations = {
 }
 
 export const getters = {
-  get: (state) => (key) => {
+  get: state => (key) => {
     return state.config && _.get(state.config, key)
   },
 }
 
 export const actions = {
-  getConfig({ state, commit, rootState }) {
+  getConfig ({ state, commit, rootState }) {
     this.app.apolloProvider.defaultClient.query({
       query: gql`{config}`,
       fetchPolicy: 'network-only'
-    }).then(({data}) => {
-      if(data && data.config && data.config){
+    }).then(({ data }) => {
+      if (data && data.config && data.config) {
         commit('updateConfig', { config: data.config })
-      }
-      else{
+      } else {
         //
       }
-    }).catch(({error}) => {
-      //
+    }).catch(({ error }) => {
+      console.error(error)
     })
   }
 }

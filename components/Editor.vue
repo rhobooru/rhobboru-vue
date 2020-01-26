@@ -1,7 +1,7 @@
 <template>
   <div>
-    <tiptap-vuetify 
-      v-model="myContent" 
+    <tiptap-vuetify
+      v-model="myContent"
       :extensions="extensions"
       :toolbar-attributes="toolbarAttrs"
       :placeholder="placeholder"
@@ -30,14 +30,14 @@ import {
   HardBreak,
   HorizontalRule,
   History
-} from "tiptap-vuetify";
+} from 'tiptap-vuetify'
 
 export default {
-  components: { 
-    TiptapVuetify 
+  components: {
+    TiptapVuetify
   },
 
-  props:[
+  props: [
     'content',
     'placeholder',
     'doClear',
@@ -60,7 +60,7 @@ export default {
           options: {
             levels: [1, 2, 3]
           }
-        }
+        },
       ],
       Bold,
       Link,
@@ -68,17 +68,13 @@ export default {
       CodeBlock,
       HorizontalRule,
       Paragraph,
-      HardBreak
+      HardBreak,
     ],
 
     myContent: '',
 
     editor: null,
   }),
-
-  created(){
-    this.myContent = this.content || ''
-  },
 
   computed: {
     toolbarAttrs () {
@@ -89,22 +85,25 @@ export default {
   },
 
   watch: {
-    myContent(){
+    myContent () {
       this.$emit('changed', this.myContent)
     },
 
-    doClear(val){
-      if(val)
-        this.clear()
+    doClear (val) {
+      if (val) { this.clear() }
     }
   },
 
+  created () {
+    this.myContent = this.content || ''
+  },
+
   methods: {
-    editorInit({ editor }){
+    editorInit ({ editor }) {
       this.editor = editor
     },
 
-    clear(){
+    clear () {
       this.editor.clearContent()
     }
   },

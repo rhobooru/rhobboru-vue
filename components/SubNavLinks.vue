@@ -6,24 +6,25 @@
       v-for="item in childNavItems"
     >
       <transition
-        :key="item.title" 
+        :key="item.title"
         name="slide-y-transition"
         mode="out-in"
       >
         <template>
-          <v-btn 
+          <v-btn
             v-if="item.title !== '__divider__'"
             :key="item.title"
-            nuxt 
-            :to="item.route" 
+            nuxt
+            :to="item.route"
             :exact="item.exact"
             text
-        
           >
-            <v-icon left>{{ item.icon }}</v-icon>
+            <v-icon left>
+              {{ item.icon }}
+            </v-icon>
             {{ item.title }}
           </v-btn>
-          <v-divider 
+          <v-divider
             v-else
             :key="item.route + 'div'"
             vertical
@@ -48,22 +49,21 @@ export default {
   ],
 
   data: () => ({
-    
+
   }),
 
-  computed:{
-    childNavItems(){
-      if(!this.navItem.children)
-        return []
+  computed: {
+    childNavItems () {
+      if (!this.navItem.children) { return [] }
 
-      return [].concat(...this.navItem.children.map(f => [f, { 
+      return [].concat(...this.navItem.children.map(f => [f, {
         title: '__divider__',
         route: f.route
       }]))
     },
   },
 
-  methods:{
+  methods: {
 
   },
 }

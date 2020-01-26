@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    icon 
+    icon
     small
     @click.prevent="setTheme(!$vuetify.theme.dark)"
   >
@@ -14,12 +14,12 @@
 export default {
   name: 'ThemeToggle',
 
-  created() {
+  created () {
     this.setTheme(this.$storage.get('darkTheme', true))
   },
 
-  methods:{
-    setTheme(value){
+  methods: {
+    setTheme (value) {
       this.$vuetify.theme.dark = value
       this.$storage.set('darkTheme', value)
     },
