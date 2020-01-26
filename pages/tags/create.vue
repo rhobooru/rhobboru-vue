@@ -13,7 +13,7 @@
             label="Name"
             required
             class="mb-8"
-          ></v-text-field>
+          />
 
           <v-text-field
             v-model="summary"
@@ -21,19 +21,20 @@
             :rules="summaryRules"
             label="Summary"
             class="mb-8"
-          ></v-text-field>
+          />
 
-          <div class="subtitle-1 pb-2">Description</div>
-          <Editor 
-            :content="description" 
-            :doClear="clearEditor"
+          <div class="subtitle-1 pb-2">
+            Description
+          </div>
+          <editor
+            :content="description"
+            :do-clear="clearEditor"
             @changed="descriptionChanged"
           />
         </v-form>
       </v-card-text>
 
       <v-card-actions>
-
         <v-btn
           text
           @click="reset"
@@ -72,8 +73,8 @@
     </v-card>
 
     <v-snackbar
-      color="success"
       v-model="successSnackbar"
+      color="success"
       :timeout="snackbarTimeout"
     >
       Tag created
@@ -86,8 +87,8 @@
     </v-snackbar>
 
     <v-snackbar
-      color="error"
       v-model="errorSnackbar"
+      color="error"
     >
       Something went wrong
       <v-btn
@@ -101,8 +102,8 @@
 </template>
 
 <script>
-import Editor from "~/components/Editor";
 import gql from 'graphql-tag'
+import Editor from '~/components/Editor'
 
 export default {
   components: {
@@ -127,15 +128,15 @@ export default {
     errorSnackbar: false,
   }),
 
-  computed:{
-    nameRules(){
+  computed: {
+    nameRules () {
       return [
         v => !!v || 'Name is required',
         v => (v && v.length <= this.maxNameLength) || 'Name must be less than 255 characters',
       ]
     },
 
-    summaryRules(){
+    summaryRules () {
       return [
         v => (v.length <= this.maxSummaryLength) || 'Summary must be less than 255 characters',
       ]
@@ -143,13 +144,12 @@ export default {
   },
 
   methods: {
-    validateForm(){
+    validateForm () {
       return this.$refs.createTag.validate()
     },
 
-    createTag(){
-      if (!this.validateForm())
-        return
+    createTag () {
+      if (!this.validateForm()) { return }
 
       const mutation = gql`mutation(
           $name: String!
@@ -170,15 +170,20 @@ export default {
         summary: this.summary,
       }
 
-      return this.$apollo.mutate({mutation, variables})
-      .catch(({ error }) => {
-        this.errorSnackbar = true
+      return new Promise((resolve, reject) => {
+        this.$apollo.mutate({ mutation, variables })
+          .then((result) => {
+            resolve(result)
+          })
+          .catch((result) => {
+            this.errorSnackbar = true
+            reject(result)
+          })
       })
     },
 
-    createAndStay(){
-      if (!this.validateForm())
-        return
+    createAndStay () {
+      if (!this.validateForm()) { return }
 
       this.createTag()
         .then(({ data }) => {
@@ -187,9 +192,8 @@ export default {
         })
     },
 
-    createAndView() {
-      if (!this.validateForm())
-        return
+    createAndView () {
+      if (!this.validateForm()) { return }
 
       this.createTag()
         .then(({ data }) => {
@@ -197,7 +201,7 @@ export default {
         })
     },
 
-    reset() {
+    reset () {
       this.$refs.createTag.reset()
       this.clearEditor = true
 
@@ -206,11 +210,11 @@ export default {
       })
     },
 
-    resetValidation() {
+    resetValidation () {
       this.$refs.createTag.resetValidation()
     },
 
-    descriptionChanged(value){
+    descriptionChanged (value) {
       this.description = value
     },
   },

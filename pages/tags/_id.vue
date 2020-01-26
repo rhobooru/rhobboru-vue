@@ -13,8 +13,8 @@
               />
               <v-text-field
                 v-else
-                class="headline editable-name"
                 v-model="editedName"
+                class="headline editable-name"
                 label="Tag name"
                 placeholder="name..."
                 filled
@@ -25,9 +25,9 @@
             </template>
             <template v-slot:action>
               <v-btn
+                v-if="!editingTag"
                 text
                 @click="editTag"
-                v-if="!editingTag"
               >
                 <v-icon left>
                   fa-edit
@@ -36,9 +36,9 @@
               </v-btn>
 
               <v-btn
+                v-if="editingTag"
                 text
                 @click="cancelTag"
-                v-if="editingTag"
               >
                 <v-icon left>
                   fa-times
@@ -46,9 +46,9 @@
                 Cancel
               </v-btn>
               <v-btn
+                v-if="editingTag"
                 text
                 @click="saveTag"
-                v-if="editingTag"
               >
                 <v-icon left>
                   fa-save
@@ -114,16 +114,18 @@
                       class="pt-3"
                     >
                       <p>
-                        Soft-deleting a tag will hide it from users who do not have 
+                        Soft-deleting a tag will hide it from users who do not have
                         permission to see soft-deleted tags. This will prevent it from
                         being searched on or from being tagged to records.
                       </p>
 
-                      <p><strong>
-                        When soft-deleted, the tag will lose all of its tagged records. 
-                        These cannot be restored. Soft-deleted tags retain their
-                        metadata, such as descriptions and aliases.
-                      </strong></p>
+                      <p>
+                        <strong>
+                          When soft-deleted, the tag will lose all of its tagged records.
+                          These cannot be restored. Soft-deleted tags retain their
+                          metadata, such as descriptions and aliases.
+                        </strong>
+                      </p>
 
                       <p>
                         Users with sufficient permissions can restore soft-deleted tags to un-hide them or
@@ -137,7 +139,7 @@
                       </p>
                     </v-card-text>
 
-                    <v-divider></v-divider>
+                    <v-divider />
 
                     <v-card-actions>
                       <v-btn
@@ -149,7 +151,7 @@
                         </v-icon>
                         Hide
                       </v-btn>
-                      <v-spacer></v-spacer>
+                      <v-spacer />
                       <v-btn
                         text
                         @click="hideTagDialog = false"
@@ -165,7 +167,6 @@
               </template>
               <span>Soft-delete this tag to hide it<br>Click for details</span>
             </v-tooltip>
-
 
             <v-tooltip
               bottom
@@ -203,13 +204,15 @@
                         Deleting this tag will scrub it from the database.
                       </p>
 
-                      <p><strong>
-                        When deleted, the tag will lose all of its data, such as
-                        tagged records. These cannot be restored.
-                      </strong></p>
+                      <p>
+                        <strong>
+                          When deleted, the tag will lose all of its data, such as
+                          tagged records. These cannot be restored.
+                        </strong>
+                      </p>
                     </v-card-text>
 
-                    <v-divider></v-divider>
+                    <v-divider />
 
                     <v-card-actions>
                       <v-btn
@@ -221,7 +224,7 @@
                         </v-icon>
                         Delete Tag
                       </v-btn>
-                      <v-spacer></v-spacer>
+                      <v-spacer />
                       <v-btn
                         text
                         @click="deleteTagDialog = false"
@@ -249,9 +252,9 @@
           >
             <template v-slot:action>
               <v-btn
+                v-if="!editingDescription"
                 text
                 @click="editDescription"
-                v-if="!editingDescription"
               >
                 <v-icon left>
                   fa-edit
@@ -260,9 +263,9 @@
               </v-btn>
 
               <v-btn
+                v-if="editingDescription"
                 text
                 @click="cancelDescription"
-                v-if="editingDescription"
               >
                 <v-icon left>
                   fa-times
@@ -270,9 +273,9 @@
                 Cancel
               </v-btn>
               <v-btn
+                v-if="editingDescription"
                 text
                 @click="saveDescription"
-                v-if="editingDescription"
               >
                 <v-icon left>
                   fa-save
@@ -283,14 +286,14 @@
           </card-header>
 
           <v-card-text
-            v-html="tag.description"
             v-if="!editingDescription"
+            v-html="tag.description"
           />
           <v-card-text
             v-else
           >
-            <editor 
-              :content="tag.description" 
+            <editor
+              :content="tag.description"
               :placeholder="'tag description...'"
               @changed="descriptionChanged"
             />
@@ -326,11 +329,9 @@
       </v-col>
     </v-row>
 
-
-
     <v-snackbar
-      color="error"
       v-model="errorSnackbar"
+      color="error"
     >
       Something went wrong
       <v-btn
@@ -346,20 +347,20 @@
 <script>
 import gql from 'graphql-tag'
 import ThumbnailSlider from '~/components/Record/ThumbnailSlider'
-import Editor from "~/components/Editor";
-import CardHeader from "~/components/CardHeader";
+import Editor from '~/components/Editor'
+import CardHeader from '~/components/CardHeader'
 
 export default {
-  components:{
+  components: {
     ThumbnailSlider,
     Editor,
     CardHeader,
   },
 
-  data: function() {
+  data () {
     return {
-      record: {content_rating: {}, created_by:{}},
-      tag: {aliased_to_tag: {}},
+      record: { content_rating: {}, created_by: {} },
+      tag: { aliased_to_tag: {} },
 
       editingDescription: false,
       editedDescription: '',
@@ -374,27 +375,26 @@ export default {
       errorSnackbar: false,
     }
   },
-  
-  created: function () {
-    this.getTag()
-  },
 
-  computed:{
-    records(){
-      if(!this.tag || !this.tag.records)
-        return null
+  computed: {
+    records () {
+      if (!this.tag || !this.tag.records) { return null }
 
       return this.tag.records.data
     },
   },
 
-  methods:{
+  created () {
+    this.getTag()
+  },
 
-    editTag(){
+  methods: {
+
+    editTag () {
       this.editingTag = true
     },
 
-    saveTag(){
+    saveTag () {
       const mutation = gql`mutation(
         $id: ID!
         $name: String
@@ -417,7 +417,7 @@ export default {
         summary: this.editedSummary,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({ mutation, variables })
         .then(({ data }) => {
           this.tag.name = data.updateTag.name
           this.tag.summary = data.updateTag.summary
@@ -427,22 +427,23 @@ export default {
         })
         .catch(({ error }) => {
           this.errorSnackbar = true
+          console.error(error)
         })
     },
 
-    cancelTag(){
+    cancelTag () {
       this.editingTag = false
     },
 
-    descriptionChanged(value){
+    descriptionChanged (value) {
       this.editedDescription = value
     },
 
-    editDescription(){
+    editDescription () {
       this.editingDescription = true
     },
 
-    saveDescription(){
+    saveDescription () {
       const mutation = gql`mutation($id: ID!, $description: String){
         updateTag(id: $id, description: $description){
           id
@@ -455,22 +456,23 @@ export default {
         description: this.editedDescription,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      this.$apollo.mutate({ mutation, variables })
         .then(({ data }) => {
           this.tag.description = data.updateTag.description
           this.editingDescription = false
         })
         .catch(({ error }) => {
           this.errorSnackbar = true
+          console.error(error)
         })
     },
 
-    cancelDescription(){
+    cancelDescription () {
       this.editingDescription = false
     },
 
-    getTag(){
-      const isId = !isNaN(this.$route.params.id);
+    getTag () {
+      const isId = !isNaN(this.$route.params.id)
 
       const query = gql`query($id: ID, $name: String){
         tag(id: $id, name: $name){
@@ -495,12 +497,9 @@ export default {
       }`
 
       const variables = { }
-      if(isId)
-        variables.id = this.$route.params.id
-      else
-        variables.name = this.$route.params.id
+      if (isId) { variables.id = this.$route.params.id } else { variables.name = this.$route.params.id }
 
-      this.$apollo.query({query, variables})
+      this.$apollo.query({ query, variables })
         .then(({ data }) => {
           this.tag = data.tag
           this.editedName = this.tag.name

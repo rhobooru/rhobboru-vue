@@ -3,16 +3,16 @@
     <v-card>
       <v-card-title>
         Tags
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-text-field
           v-model="search"
           append-icon="fa-search"
           label="Search"
           single-line
           hide-details
-        ></v-text-field>
+        />
       </v-card-title>
-      
+
       <v-data-table
         :headers="headers"
         :items="tags"
@@ -40,8 +40,8 @@
         class="mt-6"
       >
         <div>
-          <v-pagination 
-            v-model="page" 
+          <v-pagination
+            v-model="page"
             :length="pageCount"
           />
         </div>
@@ -56,7 +56,6 @@
             @change="getTags"
           />
         </div>
-        
       </v-card-actions>
     </v-card>
   </v-container>
@@ -66,7 +65,7 @@
 import gql from 'graphql-tag'
 
 export default {
-  data: function() {
+  data () {
     return {
       page: 1,
       pageCount: 0,
@@ -87,22 +86,15 @@ export default {
       ],
     }
   },
-  
-  mounted: function () {
-    if(this.$route.query.page)
-      this.page = parseInt(this.$route.query.page)
-
-    this.getTags()
-  },
 
   computed: {
-    visiblePages(){
+    visiblePages () {
       return Math.max(this.numberOfPages, 10)
     },
   },
 
   watch: {
-    page() {
+    page () {
       history.pushState(
         {},
         null,
@@ -120,8 +112,14 @@ export default {
     },
   },
 
-  methods:{
-    getTags(){
+  mounted () {
+    if (this.$route.query.page) { this.page = parseInt(this.$route.query.page) }
+
+    this.getTags()
+  },
+
+  methods: {
+    getTags () {
       this.loading = true
 
       const { sortBy, sortDesc } = this.options
@@ -156,17 +154,17 @@ export default {
         orderDir: sortDesc.length ? (sortDesc[0] ? 'DESC' : 'ASC') : 'ASC',
       }
 
-      return this.$apollo.query({query, variables, fetchPolicy: 'network-only'})
+      this.$apollo.query({ query, variables, fetchPolicy: 'network-only' })
         .then(({ data }) => {
           this.tags = data.tags.data
 
-          this.totalTags = data.tags.paginatorInfo.total;
+          this.totalTags = data.tags.paginatorInfo.total
 
           this.loading = false
         })
     },
 
-    url(id){
+    url (id) {
       return '/tag/' + id
     }
   },

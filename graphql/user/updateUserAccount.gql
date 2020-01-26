@@ -6,17 +6,12 @@ mutation(
   $email: String
   $bio: String
 ){
-  updateUser(input:{
+  updateUser(
     id: $id
     username: $username
-    profile: {
-      update: {
-        user_id: $id
-        email: $email
-        bio: $bio
-      }
-    }
-  }){
+    email: $email
+    bio: $bio
+  ){
     ...AuthedUserFragment
   }
 }

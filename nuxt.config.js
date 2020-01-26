@@ -1,6 +1,6 @@
 const isDev = process.env.NODE_ENV !== 'production'
 
-const env =  {
+const env = {
   baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   appName: process.env.APP_NAME || 'rhobooru',
   graphqlEndpoint: process.env.GRAPHQL_ENDPOINT || 'http://127.0.0.1:8000/graphql'
@@ -32,7 +32,7 @@ export default {
         hid: 'description',
         name: 'description',
         content: process.env.APP_DESCRIPTION || ''
-      }
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -59,8 +59,8 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    //'@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/vuetify',
   ],
   /*
    ** Nuxt.js modules
@@ -70,10 +70,10 @@ export default {
     'nuxt-client-init-module',
 
     // Doc: https://axios.nuxtjs.org/usage
-    //'@nuxtjs/axios',
-    //'@nuxtjs/pwa'
+    // '@nuxtjs/axios',
+    // '@nuxtjs/pwa'
     // Doc: https://github.com/nuxt-community/dotenv-module
-    //'@nuxtjs/dotenv',
+    // '@nuxtjs/dotenv',
     '@nuxtjs/apollo',
   ],
   /*
@@ -81,7 +81,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    headers:{
+    headers: {
       common: {
         'Access-Control-Allow-Origin': '*',
       },
@@ -124,14 +124,14 @@ export default {
   apollo: {
     authenticationType: 'Bearer',
     clientConfigs: {
-        default: '~/client-config.ts'
+      default: '~/client-config.ts'
     },
   },
   pwa: {
     manifest: {
       lang: 'en',
-      name: "PWATestApp",
-      short_name: "PWA/Nuxt - Test App",
+      name: 'PWATestApp',
+      short_name: 'PWA/Nuxt - Test App',
       display: 'standalone',
       theme_color: '#F11010',
     },
@@ -146,7 +146,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
-    transpile: ['vuetify/lib', "tiptap-vuetify"],
+    extend (config, ctx) {},
+    transpile: ['vuetify/lib', 'tiptap-vuetify'],
   }
 }

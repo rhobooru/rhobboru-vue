@@ -1,22 +1,22 @@
 <template>
   <div>
-      <record-side-bar
-        :record="record"
-        @saved="saved"
-        @get-full-res="showPreview = false"
-        @preload-full-res="preloadFullRes = true"
-      />
+    <record-side-bar
+      :record="record"
+      @saved="saved"
+      @get-full-res="showPreview = false"
+      @preload-full-res="preloadFullRes = true"
+    />
 
-      <record-media 
-        :showPreview="showPreview"
-        :record="record"
-        :preloadFullRes="preloadFullRes"
-      />
+    <record-media
+      :show-preview="showPreview"
+      :record="record"
+      :preload-full-res="preloadFullRes"
+    />
 
-      <similar-records 
-        :similarToRecord="record"
-        class="mt-7"
-      />
+    <similar-records
+      :similar-to-record="record"
+      class="mt-7"
+    />
   </div>
 </template>
 
@@ -28,15 +28,15 @@ import SimilarRecords from '~/components/Record/SimilarRecords'
 import RecordSideBar from '~/components/Record/RecordSideBar'
 
 export default {
-  components:{
+  components: {
     RecordMedia,
     SimilarRecords,
     RecordSideBar,
   },
 
-  data:() => ({
+  data: () => ({
     record: {
-      content_rating: {}, 
+      content_rating: {},
       created_by: {},
       updated_by: {},
       deleted_by: {},
@@ -46,23 +46,23 @@ export default {
     showPreview: true,
     preloadFullRes: false,
   }),
-  
-  created() {
+
+  created () {
     this.getRecord()
-    this.setPageHasDrawer({value: this.$route.name})
+    this.setPageHasDrawer({ value: this.$route.name })
   },
 
-  methods:{ 
+  methods: {
     ...mapMutations({
       setPageHasDrawer: 'drawer/setPageHasDrawer',
     }),
 
-    async saved(){
+    async saved () {
       await this.getRecord(true)
     },
 
-    async getRecord(forceUpdate){
-      const isId = !isNaN(this.$route.params.id);
+    getRecord (forceUpdate) {
+      const isId = !isNaN(this.$route.params.id)
 
       const query = gql`query($id: ID, $md5: String){
         record(id: $id, md5: $md5){
@@ -103,12 +103,9 @@ export default {
       }`
 
       const variables = { }
-      if(isId)
-        variables.id = this.$route.params.id
-      else
-        variables.md5 = this.$route.params.id
+      if (isId) { variables.id = this.$route.params.id } else { variables.md5 = this.$route.params.id }
 
-      return this.$apollo.query({query, variables, fetchPolicy: forceUpdate ? 'network-only' : null})
+      this.$apollo.query({ query, variables, fetchPolicy: forceUpdate ? 'network-only' : null })
         .then(({ data }) => {
           this.record = data.record
         })

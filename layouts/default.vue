@@ -2,15 +2,17 @@
   <v-app
     :dark="$vuetify.theme.dark"
   >
-
-    <v-app-bar 
-      clipped-left 
-      fixed 
+    <v-app-bar
+      clipped-left
+      fixed
       app
     >
-      <v-toolbar-title v-text="title" class="mr-5" />
+      <v-toolbar-title
+        class="mr-5"
+        v-text="title"
+      />
 
-      <v-divider 
+      <v-divider
         vertical
         inset
       />
@@ -19,17 +21,19 @@
         <template
           v-for="item in navItems"
         >
-          <v-btn 
+          <v-btn
             :key="item.title"
-            nuxt 
-            :to="item.route" 
+            nuxt
+            :to="item.route"
             :exact="item.exact"
             text
           >
-            <v-icon left>{{ item.icon }}</v-icon>
+            <v-icon left>
+              {{ item.icon }}
+            </v-icon>
             {{ item.title }}
           </v-btn>
-          <v-divider 
+          <v-divider
             :key="item.title + 'div'"
             vertical
             inset
@@ -44,13 +48,13 @@
       <template v-slot:extension>
         <side-bar-toggle />
 
-        <v-divider 
+        <v-divider
           v-show="$store.state.drawer.pageHasDrawer || activeNavItem.children"
           vertical
           inset
         />
-        
-        <sub-nav-link 
+
+        <sub-nav-link
           :nav-item="activeNavItem"
         />
 
@@ -58,11 +62,9 @@
 
         <theme-toggle />
       </template>
-
     </v-app-bar>
 
-    <UserSideBar />
-
+    <user-side-bar />
 
     <v-content>
       <v-container
@@ -90,7 +92,7 @@ export default {
     NavAvatar,
   },
 
-  data() {
+  data () {
     return {
       navItems: [
         {
@@ -98,7 +100,7 @@ export default {
           title: 'Records',
           icon: 'fa-image',
           exact: false,
-          children:[
+          children: [
             {
               route: '/records',
               title: 'List',
@@ -118,7 +120,7 @@ export default {
           title: 'Communities',
           icon: 'fa-users',
           exact: false,
-          children:[
+          children: [
             {
               route: '/communities',
               title: 'List',
@@ -138,7 +140,7 @@ export default {
           title: 'Folders',
           icon: 'fa-folder-open',
           exact: false,
-          children:[
+          children: [
             {
               route: '/folders',
               title: 'List',
@@ -158,7 +160,7 @@ export default {
           title: 'Tags',
           icon: 'fa-tag',
           exact: false,
-          children:[
+          children: [
             {
               route: '/tags',
               title: 'List',
@@ -183,23 +185,23 @@ export default {
     }
   },
 
-  computed:{
-    title(){
+  computed: {
+    title () {
       return process.env.appName
     },
 
-    activeNavItem(){
+    activeNavItem () {
       return this.navItems.find(f => this.$route.fullPath.startsWith(this.$router.resolve(f.route).route.fullPath)) || {}
     },
   },
 
-  methods:{
-    isExactActive(to){
-        return this.$route.fullPath == this.resolvedRoute(to).route.fullPath
+  methods: {
+    isExactActive (to) {
+      return this.$route.fullPath === this.resolvedRoute(to).route.fullPath
     },
 
-    resolvedRoute(to){
-        return this.$router.resolve(to)
+    resolvedRoute (to) {
+      return this.$router.resolve(to)
     },
   },
 }

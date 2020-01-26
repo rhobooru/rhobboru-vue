@@ -15,7 +15,7 @@
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-    
+
     <v-list-item
       nuxt
       to="/inbox"
@@ -28,7 +28,7 @@
       <v-list-item-content>
         <v-list-item-title>
           Inbox
-        </v-list-item-title>            
+        </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -44,7 +44,7 @@
       <v-list-item-content>
         <v-list-item-title>
           Profile
-        </v-list-item-title>            
+        </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -60,7 +60,7 @@
       <v-list-item-content>
         <v-list-item-title>
           Account
-        </v-list-item-title>            
+        </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
 
@@ -75,7 +75,7 @@
       <v-list-item-content>
         <v-list-item-title>
           Log Out
-        </v-list-item-title>            
+        </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
   </v-list>
@@ -91,26 +91,27 @@ export default {
   data: () => ({
   }),
 
-  computed:{
-    isAuthenticated(){
+  computed: {
+    isAuthenticated () {
       return this.$store.state.auth.isAuthenticated
     },
 
-    user(){
+    user () {
       return this.$store.state.auth.user
     },
   },
 
-  methods:{
+  methods: {
     ...mapMutations({
       saveLogout: 'auth/logout'
     }),
 
     async logOut () {
       try {
-        const res = await this.$apollo.mutate({
-            mutation: logoutMutation
-        }).then(({data}) => data && data.logout)
+        await this.$apollo.mutate({
+          mutation: logoutMutation
+        }).then(({ data }) => data && data.logout)
+
         await this.$apolloHelpers.onLogout()
         this.saveLogout()
 
@@ -124,6 +125,5 @@ export default {
 </script>
 
 <style scoped>
-
 
 </style>

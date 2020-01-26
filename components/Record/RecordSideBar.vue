@@ -1,19 +1,19 @@
 <template>
   <v-navigation-drawer
-    class="sidebar"
     v-model="$store.state.drawer.drawerOpen"
+    class="sidebar"
     clipped
     app
     :stateless="true"
     :width="300"
   >
-    <v-btn 
-      color="primary" 
-      @click.prevent="getFullRes"
-      @mousedown="doPreloadFullRes"
+    <v-btn
       v-if="record.preview && showPreview"
+      color="primary"
       block
       class="mb-2"
+      @click.prevent="getFullRes"
+      @mousedown="doPreloadFullRes"
     >
       <v-icon left>
         fa-expand
@@ -21,11 +21,11 @@
       Get full resolution
     </v-btn>
 
-    <v-btn 
-      color="secondary" 
-      @click.prevent="download"
+    <v-btn
+      color="secondary"
       block
       class="mb-2"
+      @click.prevent="download"
     >
       <v-icon left>
         fa-download
@@ -33,12 +33,12 @@
       Download
     </v-btn>
 
-    <v-btn 
-      color="primary" 
-      @click.prevent="edit"
-      block
+    <v-btn
       v-show="!isEdit && userHasPermission('record.update own')"
+      color="primary"
+      block
       class="mb-2"
+      @click.prevent="edit"
     >
       <v-icon left>
         fa-edit
@@ -46,10 +46,10 @@
       Edit
     </v-btn>
 
-    <v-btn 
-      color="primary" 
-      @click.prevent="save"
+    <v-btn
       v-show="isEdit"
+      color="primary"
+      @click.prevent="save"
     >
       <v-icon left>
         fa-save
@@ -57,10 +57,10 @@
       Save
     </v-btn>
 
-    <v-btn 
-      color="secondary" 
-      @click.prevent="cancel"
+    <v-btn
       v-show="isEdit"
+      color="secondary"
+      @click.prevent="cancel"
     >
       <v-icon left>
         fa-times
@@ -73,7 +73,7 @@
     >
       <span class="title">
         Tags
-        <span 
+        <span
           v-show="displayTags.length"
           class="subtitle-1"
         >
@@ -95,11 +95,11 @@
       item-value="id"
       label="Search tags"
       prepend-icon="fa-tag"
-      @change="addTag"
       return-object
       :filter="filterTags"
       :disabled="isSaving"
-    ></v-autocomplete>
+      @change="addTag"
+    />
 
     <div
       v-if="displayTags.length"
@@ -108,7 +108,7 @@
         v-for="(tag, index) in displayTags"
         :key="tag.id"
       >
-        <TagChip 
+        <tag-chip
           :tag="tag"
           :editable="isEdit"
           :disabled="isSaving"
@@ -120,7 +120,12 @@
       v-else
       class="subtitle-2"
     >
-      <v-icon left small>fa-exclamation-triangle</v-icon>
+      <v-icon
+        left
+        small
+      >
+        fa-exclamation-triangle
+      </v-icon>
       No tags found
     </div>
 
@@ -132,37 +137,57 @@
       </span>
     </section-header>
 
-    <v-icon left small>fa-eye-slash</v-icon> Content Rating
+    <v-icon
+      left
+      small
+    >
+      fa-eye-slash
+    </v-icon> Content Rating
     <br>
     <kbd
+      v-if="!isEdit"
       class="subtitle-1 mt-2"
       v-text="record.content_rating.name"
-      v-if="!isEdit"
-    ></kbd>
+    />
     <select-content-rating
       v-else
-      :contentRating="record.content_rating"
+      :content-rating="record.content_rating"
       @change="(selected) => { editableRecord.content_rating = selected }"
     />
     <br>
     <br>
-    <v-icon left small>fa-gavel</v-icon> Approved
+    <v-icon
+      left
+      small
+    >
+      fa-gavel
+    </v-icon> Approved
     <br>
     <kbd
       class="subtitle-1 mt-2"
       v-text="record.approved ? 'Yes' : 'Awaiting Approval'"
-    ></kbd>
+    />
     <br>
     <br>
-    <v-icon left small>fa-fingerprint</v-icon> MD5
+    <v-icon
+      left
+      small
+    >
+      fa-fingerprint
+    </v-icon> MD5
     <br>
     <kbd
       class="subtitle-1 mt-2"
       v-text="record.md5"
-    ></kbd>
+    />
     <br>
     <br>
-    <v-icon left small>fa-barcode</v-icon> pHash
+    <v-icon
+      left
+      small
+    >
+      fa-barcode
+    </v-icon> pHash
     <br>
     <v-tooltip bottom>
       <template
@@ -173,24 +198,36 @@
         >
           <kbd
             class="subtitle-1 mt-2"
-            v-text="record.phash"
             v-on="on"
-          ></kbd>
+            v-text="record.phash"
+          />
         </nuxt-link>
       </template>
-      <div style="max-width:200px">pHashes can be compared to find images that look similar. Click to try it...</div>
+      <div style="max-width:200px">
+        pHashes can be compared to find images that look similar. Click to try it...
+      </div>
     </v-tooltip>
     <br>
     <br>
-    <v-icon left small>fa-calendar-alt</v-icon> Created
+    <v-icon
+      left
+      small
+    >
+      fa-calendar-alt
+    </v-icon> Created
     <br>
     <kbd
       class="subtitle-1 mt-2 text-truncate"
       v-text="record.created_at"
-    ></kbd>
+    />
     <br>
     <br>
-    <v-icon left small>fa-user</v-icon> Created By
+    <v-icon
+      left
+      small
+    >
+      fa-user
+    </v-icon> Created By
     <br>
     <nuxt-link
       :to="'/users/' + record.created_by.id"
@@ -198,29 +235,37 @@
       <kbd
         class="subtitle-1 mt-2 text-truncate"
         v-text="record.created_by.username"
-      ></kbd>
+      />
     </nuxt-link>
     <br>
     <br>
-    <v-icon left small>fa-calendar-alt</v-icon> Modified
+    <v-icon
+      left
+      small
+    >
+      fa-calendar-alt
+    </v-icon> Modified
     <br>
     <kbd
       class="subtitle-1 mt-2 text-truncate"
       v-text="record.updated_at"
-    ></kbd>
+    />
     <br>
     <br>
-    <v-icon left small>fa-user</v-icon> Modified By
+    <v-icon
+      left
+      small
+    >
+      fa-user
+    </v-icon> Modified By
     <br>
     <kbd
       class="subtitle-1 mt-2 text-truncate"
       v-text="record.updated_by.username"
-    ></kbd>
-
+    />
 
     <br>
     <br>
-
 
     <v-btn
       color="error"
@@ -250,7 +295,7 @@ export default {
     SectionHeader,
   },
 
-  props:[
+  props: [
     'record',
   ],
 
@@ -269,34 +314,34 @@ export default {
     editableRecord: {},
   }),
 
+  computed: {
+    ...mapGetters({
+      userHasPermission: 'auth/userHasPermission',
+    }),
+
+    displayTags () {
+      return this.isEdit ? this.editableRecord.tags : this.record.tags
+    },
+  },
+
   watch: {
     search (val) {
       val && val !== this.selectedTag && this.searchTags(val)
     },
   },
 
-  computed: {
-    ...mapGetters({
-      userHasPermission: 'auth/userHasPermission',
-    }),
-
-    displayTags(){
-      return this.isEdit ? this.editableRecord.tags : this.record.tags
-    },
-  },
-
   methods: {
-    edit(){
+    edit () {
       this.isEdit = true
       this.editableRecord = JSON.parse(JSON.stringify(this.record))
     },
 
-    cancel(){
+    cancel () {
       this.isEdit = false
       this.editableRecord = {}
     },
 
-    async save(){
+    async save () {
       this.$emit('saving')
       this.isSaving = true
 
@@ -304,14 +349,14 @@ export default {
       await this.syncRecordTags()
 
       this.isEdit = false
-      
+
       this.editableRecord = {}
 
       this.isSaving = false
       this.$emit('saved')
     },
 
-    async updateRecord(){
+    async updateRecord () {
       const mutation = gql`mutation($id: ID!, $content_rating_id: Int){
         updateRecord(id: $id, content_rating_id: $content_rating_id){
           id
@@ -323,10 +368,10 @@ export default {
         content_rating_id: this.editableRecord.content_rating.id,
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      await this.$apollo.mutate({ mutation, variables })
     },
 
-    async syncRecordTags(){
+    async syncRecordTags () {
       const mutation = gql`mutation($record_id: ID!, $tag_ids: [ID!]!){
         syncRecordTags(record_id: $record_id, tag_ids: $tag_ids){
           id
@@ -338,29 +383,28 @@ export default {
         tag_ids: this.editableRecord.tags.map(f => f.id),
       }
 
-      return this.$apollo.mutate({mutation, variables})
+      await this.$apollo.mutate({ mutation, variables })
     },
 
-    filterTags(item, queryText, itemText){
-      return itemText.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1 &&
+    filterTags (item, queryText, itemText) {
+      return itemText.toLocaleLowerCase().includes(queryText.toLocaleLowerCase()) &&
         !this.editableRecord.tags.find(f => f.name === itemText)
     },
 
-    removeTag(tagIndex){
+    removeTag (tagIndex) {
       this.editableRecord.tags.splice(tagIndex, 1)
     },
 
-    addTag(){
-      if(this.selectedTag)
-        this.editableRecord.tags.push({...this.selectedTag, isNew: true})
+    addTag () {
+      if (this.selectedTag) { this.editableRecord.tags.push({ ...this.selectedTag, isNew: true }) }
 
       this.$nextTick(() => {
         this.selectedTag = ''
         this.search = null
       })
     },
-    
-    searchTags(v) {
+
+    searchTags (v) {
       this.isLoading = true
 
       const query = gql`query($name: Mixed){
@@ -380,7 +424,7 @@ export default {
         name: v + '%',
       }
 
-      this.$apollo.query({query, variables})
+      this.$apollo.query({ query, variables })
         .then(({ data }) => {
           this.foundTags = data.tags.data
 
@@ -388,7 +432,7 @@ export default {
         })
     },
 
-    download(){
+    download () {
       const url = this.record.image
       const filename = this.record.md5 + '.png'
 
@@ -403,15 +447,15 @@ export default {
         }).catch(error => console.error(error))
     },
 
-    getFullRes(){
-      console.log("here")
+    getFullRes () {
+      console.log('here')
 
       this.showPreview = false
 
       this.$emit('get-full-res')
     },
 
-    doPreloadFullRes(){
+    doPreloadFullRes () {
       this.preloadFullRes = true
 
       this.$emit('preload-full-res')

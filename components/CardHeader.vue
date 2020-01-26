@@ -14,17 +14,17 @@
       </span>
     </slot>
 
-    <v-divider 
+    <v-divider
       class="ml-5 mr-2 brighter-divider"
     />
 
-    <slot name="action"></slot>
+    <slot name="action" />
   </v-card-title>
 </template>
 
 <script>
 export default {
-  name:'CardHeader',
+  name: 'CardHeader',
 
   props: [
     'title',

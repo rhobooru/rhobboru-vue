@@ -1,10 +1,9 @@
 <template>
-
   <v-form
-    @submit.prevent="register"
     ref="registerForm"
     v-model="valid"
     lazy-validation
+    @submit.prevent="register"
   >
     <v-list
       :loading="isRegistering"
@@ -53,8 +52,8 @@
           <v-btn
             color="primary"
             type="submit"
-            @click.prevent="register"
             :disabled="!hasInput || !valid"
+            @click.prevent="register"
           >
             <v-icon left>
               fa-edit
@@ -94,7 +93,6 @@
       Registration failed
     </v-banner>
   </v-form>
-  
 </template>
 
 <script>
@@ -123,12 +121,12 @@ export default {
     valid: true,
   }),
 
-  computed:{
-    hasInput(){
+  computed: {
+    hasInput () {
       return this.username && this.password && this.confirmPassword
     },
-    
-    confirmPasswordRules() {
+
+    confirmPasswordRules () {
       return [
         v => !!v || 'Password confirmation is required',
         v => (!!v && v) === this.password || 'Passwords must match',
@@ -142,7 +140,7 @@ export default {
     confirmPassword: 'validateField',
   },
 
-  methods:{
+  methods: {
     ...mapMutations({
       saveLogin: 'auth/login'
     }),
@@ -156,15 +154,15 @@ export default {
 
       try {
         const res = await this.$apollo.mutate({
-            mutation: registerMutation,
-            variables: {
-              username: this.username,
-              password: this.password,
-              passwordConfirm: this.confirmPassword,
-            }
-        }).then(({data}) => data && data.register)
+          mutation: registerMutation,
+          variables: {
+            username: this.username,
+            password: this.password,
+            passwordConfirm: this.confirmPassword,
+          }
+        }).then(({ data }) => data && data.register)
         await this.$apolloHelpers.onLogin(res.access_token)
-        this.saveLogin({user: res.user})
+        this.saveLogin({ user: res.user })
 
         this.$emit('registered')
       } catch (e) {
@@ -174,15 +172,15 @@ export default {
       this.isRegistering = false
     },
 
-    login(){
+    login () {
       this.$refs.registerForm.reset()
       this.$emit('login')
     },
 
-    showError(){
+    showError () {
       this.isError = true
 
-      window.setTimeout(() =>{
+      window.setTimeout(() => {
         this.isError = false
       }, 4000)
     }

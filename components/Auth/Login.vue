@@ -1,8 +1,7 @@
 <template>
-
   <v-form
-    @submit.prevent="login"
     ref="loginForm"
+    @submit.prevent="login"
   >
     <v-list
       :loading="isLoggingIn"
@@ -36,13 +35,12 @@
           <v-btn
             color="primary"
             type="submit"
-            @click.prevent="login"
             :disabled="!hasInput"
+            @click.prevent="login"
           >
             <v-icon left>
               fa-sign-in-alt
-            </v-icon>
-            Login
+            </v-icon>Login
           </v-btn>
         </v-list-item-content>
       </v-list-item>
@@ -55,8 +53,7 @@
           >
             <v-icon left>
               fa-edit
-            </v-icon>
-            Register
+            </v-icon>Register
           </v-btn>
         </v-list-item-content>
       </v-list-item>
@@ -66,18 +63,11 @@
       v-show="isError"
       color="error"
     >
-      <v-avatar
-        slot="icon"
-      >
-        <v-icon>
-          fa-exclamation
-        </v-icon>
-      </v-avatar>
-
-      Login failed
+      <v-avatar slot="icon">
+        <v-icon>fa-exclamation</v-icon>
+      </v-avatar>Login failed
     </v-banner>
   </v-form>
-  
 </template>
 
 <script>
@@ -96,30 +86,32 @@ export default {
     isError: false,
   }),
 
-  computed:{
-    hasInput(){
+  computed: {
+    hasInput () {
       return this.username && this.password
     },
   },
 
-  methods:{
+  methods: {
     ...mapMutations({
-      saveLogin: 'auth/login'
+      saveLogin: 'auth/login',
     }),
 
     async login () {
       this.isLoggingIn = true
 
       try {
-        const res = await this.$apollo.mutate({
+        const res = await this.$apollo
+          .mutate({
             mutation: loginMutation,
             variables: {
               username: this.username,
               password: this.password,
-            }
-        }).then(({data}) => data && data.login)
+            },
+          })
+          .then(({ data }) => data && data.login)
         await this.$apolloHelpers.onLogin(res.access_token)
-        this.saveLogin({user: res.user})
+        this.saveLogin({ user: res.user })
 
         this.$emit('logged-in')
       } catch (e) {
@@ -129,21 +121,20 @@ export default {
       this.isLoggingIn = false
     },
 
-    register(){
+    register () {
       this.$emit('register')
     },
 
-    showError(){
+    showError () {
       this.isError = true
 
-      window.setTimeout(() =>{
+      window.setTimeout(() => {
         this.isError = false
       }, 4000)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-
 </style>

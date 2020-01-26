@@ -1,8 +1,8 @@
 <template>
   <div class="section-header">
-    <slot></slot>
+    <slot />
 
-    <v-divider 
+    <v-divider
       class="ml-5 brighter-divider"
     />
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name:'SectionHeader',
+  name: 'SectionHeader',
 }
 </script>
 

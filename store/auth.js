@@ -1,5 +1,5 @@
-import meQuery from '~/graphql/auth/me.gql'
 import Vue from 'vue'
+import meQuery from '~/graphql/auth/me.gql'
 
 export const state = () => ({
   isAuthenticated: false,
@@ -32,58 +32,53 @@ export const mutations = {
 }
 
 export const getters = {
-  userHasPermission: (state) => (permission) => {
+  userHasPermission: state => (permission) => {
     return state.user && state.user.all_permissions.find(item => item.name === permission)
   },
 
   roles: (state) => {
-    if(!state.user)
-      return null
+    if (!state.user) { return null }
 
     return state.user.roles
   },
 
   permissions: (state) => {
-    if(!state.user)
-      return null
+    if (!state.user) { return null }
 
     return state.user.all_permissions
   },
 
   user: (state) => {
-    if(!state.user)
-      return {}
+    if (!state.user) { return {} }
 
     return state.user
   },
 
   avatarUrl: (state) => {
-    if(state.user)
-      return state.user.avatar_url
+    if (state.user) { return state.user.avatar_url }
 
     return state.cachedAvatarUrl
   },
 }
 
 export const actions = {
-  refreshUser({ state, commit, rootState }) {
+  refreshUser ({ state, commit, rootState }) {
     const hasToken = !!this.$apolloHelpers.getToken()
-    
-    if(!hasToken)
-      return
+
+    if (!hasToken) { return }
 
     this.app.apolloProvider.defaultClient.query({
       query: meQuery,
       fetchPolicy: 'network-only'
-    }).then(({data}) => {
-      if(data && data.me){
+    }).then(({ data }) => {
+      if (data && data.me) {
         commit('updateUser', { user: data.me })
-      }
-      else{
+      } else {
         commit('logout')
         this.$apolloHelpers.onLogout()
       }
-    }).catch(({error}) => {
+    }).catch(({ error }) => {
+      console.error(error)
       commit('logout')
       this.$apolloHelpers.onLogout()
     })

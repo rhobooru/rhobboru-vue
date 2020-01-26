@@ -52,27 +52,25 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
 export default {
   name: 'QuickList',
 
   components: {
   },
 
-  props:[
-    
+  props: [
+
   ],
 
   data: () => ({
-    
+
   }),
 
-  watch: {
-    
+  computed: {
+
   },
 
-  computed: {
+  watch: {
 
   },
 

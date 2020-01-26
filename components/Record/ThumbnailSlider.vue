@@ -4,10 +4,10 @@
     class="thumbnail-slide-group"
   >
     <v-slide-item
-      v-for="record in records" 
+      v-for="record in records"
       :key="record.id"
     >
-      <thumbnail 
+      <thumbnail
         :record="record"
       />
     </v-slide-item>
@@ -20,28 +20,28 @@ import Thumbnail from '~/components/Record/Thumbnail.vue'
 export default {
   name: 'ThumbnailSlider',
 
-  components:{
+  components: {
     Thumbnail,
   },
 
   props: [
-    'records'
+    'records',
   ],
 
-  data:() => ({
+  data: () => ({
 
   }),
 
-  watch:{
+  computed: {
 
   },
 
-  computed:{
+  watch: {
 
   },
 
   methods: {
-    
+
   },
 }
 </script>

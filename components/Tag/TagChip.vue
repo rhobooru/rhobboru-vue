@@ -12,11 +12,11 @@
         :to="editable ? null : tagUrl"
         class="accent mb-2"
         :close="editable"
-        @click:close="closeTag"
         :input-value="tag.isNew"
         :disabled="disabled"
-        v-on="on"
         max-width="200"
+        @click:close="closeTag"
+        v-on="on"
       >
         <span
           class="tag-name text-truncate"
@@ -25,8 +25,8 @@
         </span>
 
         <span
-          class="tag-count"
           v-show="showCount"
+          class="tag-count"
         >
           ({{ tag.records_count }})
         </span>
@@ -39,7 +39,10 @@
 
       <div v-show="tag.summary">
         <span class="overline text-uppercase">summary</span>
-        <span class="body-2 pl-2" v-text="tag.summary" />
+        <span
+          class="body-2 pl-2"
+          v-text="tag.summary"
+        />
       </div>
 
       <div>
@@ -47,15 +50,15 @@
         <span class="body-2 pl-2">{{ tag.records_count }}</span>
       </div>
 
-      <div 
-        class="overline font-italic mt-3"
+      <div
         v-if="editable"
+        class="overline font-italic mt-3"
       >
         click the X to remove
       </div>
-      <div 
-        class="overline font-italic mt-3"
+      <div
         v-else
+        class="overline font-italic mt-3"
       >
         click to view tag
       </div>
@@ -64,13 +67,15 @@
 </template>
 
 <script>
-import { stringify } from 'querystring'
 export default {
   name: 'TagChip',
 
   props: {
     editable: Boolean,
-    tag: Object,
+    tag: {
+      type: Object,
+      default: null,
+    },
     disabled: Boolean,
     showCount: {
       type: Boolean,
@@ -78,21 +83,20 @@ export default {
     },
   },
 
+  data: () => ({
+
+  }),
+
   computed: {
-    tagUrl(){
-      if(!this.tag)
-        return ''
+    tagUrl () {
+      if (!this.tag) { return '' }
 
       return '/tags/' + this.tag.id
     },
   },
 
-  data: () => ({
-
-  }),
-
-  methods:{
-    closeTag(){
+  methods: {
+    closeTag () {
       this.$emit('close', this.tag.id)
     }
   },
