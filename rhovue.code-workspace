@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.tabSize": 2,
+		"git.autofetch": true,
+		"git.enableSmartCommit": true,
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll": true
+		},
+		"eslint.alwaysShowStatus": true,
+		"files.insertFinalNewline": true,
+		"vetur.format.enable": false
+	}
+}

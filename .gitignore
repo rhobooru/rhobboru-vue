@@ -79,7 +79,6 @@ dist
 
 # IDE / Editor
 .idea
-*.code-workspace
 .editorconfig
 
 # Service worker
