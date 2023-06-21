@@ -25,7 +25,7 @@
     "fs": "0.0.1-security",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.15",
-    "nuxt": "^2.0.0",
+    "nuxt": "^3.4.3",
     "nuxt-client-init-module": "^0.1.7",
     "tiptap-vuetify": "^2.10.0",
     "vue2-storage": "^5.0.0"
